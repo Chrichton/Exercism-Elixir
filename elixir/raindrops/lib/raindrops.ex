@@ -12,10 +12,9 @@ defmodule Raindrops do
   def convert(number) do
     Enum.zip([3, 5 ,7], ["Pling", "Plang", "Plong"])
       |> Enum.reduce("", fn {divisor, sound}, accu  ->
-        case rem(number, divisor) do
-          0 -> accu <> sound
-          _ -> accu
-        end
+        if (rem(number, divisor) == 0),
+          do: accu <> sound,
+          else: accu
       end)
       |> to_output(number)
   end
@@ -28,24 +27,35 @@ defmodule Raindrops do
     sound
   end
 
-  # # Why does this not work?
-  # def convert2(number) do
+  # Conditional Solution
+  # Leaned: Cannot modify outer variable inside a block. BUT Block return value!!
+  # I really like that!!
+
+  # def convert(number) do
   #   result = ""
 
-  #   if rem(number, 3) == 0 do
-  #     result = result <> "Pling"
+  #   result = if rem(number, 3) == 0 do
+  #     result <> "Pling"
+  #   else
+  #     result
   #   end
 
-  #   if rem(number, 5) == 0 do
-  #     result = result <> "Plang"
+  #   result = if rem(number, 5) == 0 do
+  #     result <> "Plang"
+  #   else
+  #     result
   #   end
 
-  #   if rem(number, 5) == 0 do
-  #     result = result <> "Plong"
+  #   result = if rem(number, 7) == 0 do
+  #     result <> "Plong"
+  #   else
+  #     result
   #   end
 
-  #   if result == '' do
+  #   if result == "" do
   #     Integer.to_string(number)
+  #   else
+  #     result
   #   end
   # end
 end
