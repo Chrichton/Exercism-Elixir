@@ -14,70 +14,26 @@ defmodule RomanNumerals do
   def numeral(number) do
     roman_number = ""
 
-    {roman_number, number} = if number >= 1000 do
-      number_of = div(number, 1000)
-      roman = String.duplicate(numeral(1000), number_of)
-      rest = number - number_of * 1000
-      {roman_number <> roman, rest}
-    else
-      {roman_number, number}
-    end
-
-    {roman_number, number} = if number >= 500 do
-      number_of = div(number, 500)
-      roman = String.duplicate(numeral(500), number_of)
-      rest = number - number_of * 500
-      {roman_number <> roman, rest}
-    else
-      {roman_number, number}
-    end
-
-    {roman_number, number} = if number >= 100 do
-      number_of = div(number, 100)
-      roman = String.duplicate(numeral(100), number_of)
-      rest = number - number_of * 100
-      {roman_number <> roman, rest}
-    else
-      {roman_number, number}
-    end
-
-    {roman_number, number} = if number >= 50 do
-      number_of = div(number, 50)
-      roman = String.duplicate(numeral(50), number_of)
-      rest = number - number_of * 50
-      {roman_number <> roman, rest}
-    else
-      {roman_number, number}
-    end
-
-    {roman_number, number} = if number >= 10 do
-      number_of = div(number, 10)
-      roman = String.duplicate(numeral(10), number_of)
-      rest = number - number_of * 10
-      {roman_number <> roman, rest}
-    else
-      {roman_number, number}
-    end
-
-    {roman_number, number} = if number >= 5 do
-      number_of = div(number, 5)
-      roman = String.duplicate(numeral(5), number_of)
-      rest = number - number_of * 5
-      {roman_number <> roman, rest}
-    else
-      {roman_number, number}
-    end
-
-    {roman_number, _} = if number >= 1 do
-      number_of = div(number, 1)
-      roman = String.duplicate(numeral(1), number_of)
-      rest = number - number_of * 1
-      {roman_number <> roman, rest}
-    else
-      {roman_number, number}
-    end
+    {roman_number, number} = numeral_number(number, roman_number, 1000)
+    {roman_number, number} = numeral_number(number, roman_number, 500)
+    {roman_number, number} = numeral_number(number, roman_number, 100)
+    {roman_number, number} = numeral_number(number, roman_number, 50)
+    {roman_number, number} = numeral_number(number, roman_number, 10)
+    {roman_number, number} = numeral_number(number, roman_number, 5)
+    {roman_number, _} = numeral_number(number, roman_number, 1)
 
     remove_4_occurrences(roman_number)
+  end
+
+  defp numeral_number(number, current_roman_number, factor) do
+    if number >= factor do
+      number_of = div(number, factor)
+      roman = String.duplicate(numeral(factor), number_of)
+      rest = number - number_of * factor
+      {current_roman_number <> roman, rest}
+    else
+      {current_roman_number, number}
+    end
   end
 
   defp remove_4_occurrences(roman_number) do
