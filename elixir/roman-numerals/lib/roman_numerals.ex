@@ -23,7 +23,12 @@ defmodule RomanNumerals do
     remove_4_occurrences(roman_number)
   end
 
-  @spec numeral_number(pos_integer, String.t(), pos_integer()) :: {any, any}
+  # number: number to convert to roman
+  # current_roman_number: roman number so far
+  # factor: decimal representation of I, V, X, L, C, M, D, guard would be possible, factor could be one of "I".."M"
+  # I could define dictionary {"I" => 1, "V" => 5...} and use it. Code would become more compact
+  # returns {remaining number, new roman_number}
+  @spec numeral_number(pos_integer, String.t(), pos_integer()) :: {pos_integer(), String.t()}
   def numeral_number(number, current_roman_number, factor) do
     if number >= factor do
       number_of = div(number, factor)
