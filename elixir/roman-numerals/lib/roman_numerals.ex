@@ -14,25 +14,26 @@ defmodule RomanNumerals do
   def numeral(number) do
     roman_number = ""
 
-    {roman_number, number} = numeral_number(number, roman_number, 1000)
-    {roman_number, number} = numeral_number(number, roman_number, 500)
-    {roman_number, number} = numeral_number(number, roman_number, 100)
-    {roman_number, number} = numeral_number(number, roman_number, 50)
-    {roman_number, number} = numeral_number(number, roman_number, 10)
-    {roman_number, number} = numeral_number(number, roman_number, 5)
-    {roman_number, _} = numeral_number(number, roman_number, 1)
+    {number, roman_number} = numeral_number(number, roman_number, 1000)
+    {number, roman_number} = numeral_number(number, roman_number, 500)
+    {number, roman_number} = numeral_number(number, roman_number, 100)
+    {number, roman_number} = numeral_number(number, roman_number, 50)
+    {number, roman_number} = numeral_number(number, roman_number, 10)
+    {number, roman_number} = numeral_number(number, roman_number, 5)
+    {_, roman_number} = numeral_number(number, roman_number, 1)
 
     remove_4_occurrences(roman_number)
   end
 
-  defp numeral_number(number, current_roman_number, factor) do
+  @spec numeral_number(pos_integer, String.t(), pos_integer()) :: {any, any}
+  def numeral_number(number, current_roman_number, factor) do
     if number >= factor do
       number_of = div(number, factor)
       roman = String.duplicate(numeral(factor), number_of)
       rest = number - number_of * factor
-      {current_roman_number <> roman, rest}
+      {rest, current_roman_number <> roman}
     else
-      {current_roman_number, number}
+      {number, current_roman_number}
     end
   end
 
