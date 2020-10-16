@@ -2,6 +2,7 @@ defmodule RomanNumerals do
   @doc """
   Convert the number to a roman number.
   """
+
   def numeral(1), do: "I"
   def numeral(5), do: "V"
   def numeral(10), do: "X"
@@ -12,13 +13,23 @@ defmodule RomanNumerals do
 
   @spec numeral(pos_integer) :: String.t()
   def numeral(number) do
-    numeral_number({number, ""}, 1000)
-      |> numeral_number(500)
-      |> numeral_number(100)
-      |> numeral_number(50)
-      |> numeral_number(10)
-      |> numeral_number(5)
-      |> numeral_number(1)
+    roman_digit_to_number = %{
+      "M" => 1000,
+      "D" => 500,
+      "C" => 100,
+      "L" => 50,
+      "X" => 10,
+      "V" => 5,
+      "I" => 1
+    }
+
+    numeral_number({number, ""}, roman_digit_to_number, "M")
+      |> numeral_number(roman_digit_to_number, "D")
+      |> numeral_number(roman_digit_to_number, "C")
+      |> numeral_number(roman_digit_to_number, "L")
+      |> numeral_number(roman_digit_to_number, "X")
+      |> numeral_number(roman_digit_to_number, "V")
+      |> numeral_number(roman_digit_to_number, "I")
       |> elem(1)
       |> remove_4_occurrences()
   end
@@ -28,11 +39,12 @@ defmodule RomanNumerals do
   # factor: decimal representation of I, V, X, L, C, M, D, guard would be possible, factor could be one of "I".."M"
   # I could define dictionary {"I" => 1, "V" => 5...} and use it. Code would become more compact
   # returns {remaining number, new roman_number}
-  @spec numeral_number({pos_integer, String.t()}, pos_integer()) :: {pos_integer(), String.t()}
-  def numeral_number({number, current_roman_number}, factor) do
+  #@spec numeral_number({pos_integer, String.t()}, String.t()) :: {pos_integer(), String.t()}
+  defp numeral_number({number, current_roman_number}, roman_digit_to_number, roman_digit) do
+    factor = Map.fetch!(roman_digit_to_number, roman_digit)
     if number >= factor do
       number_of = div(number, factor)
-      roman = String.duplicate(numeral(factor), number_of)
+      roman = String.duplicate(roman_digit, number_of)
       rest = number - number_of * factor
       {rest, current_roman_number <> roman}
     else
@@ -50,34 +62,3 @@ defmodule RomanNumerals do
       |> String.replace("IIII", "IV")   #  4
   end
 end
-
-# Before piping. What do you like more?
-# @spec numeral(pos_integer) :: String.t()
-# def numeral(number) do
-#   {number, roman_number} = numeral_number(number, "", 1000)
-#   {number, roman_number} = numeral_number(number, roman_number, 500)
-#   {number, roman_number} = numeral_number(number, roman_number, 100)
-#   {number, roman_number} = numeral_number(number, roman_number, 50)
-#   {number, roman_number} = numeral_number(number, roman_number, 10)
-#   {number, roman_number} = numeral_number(number, roman_number, 5)
-#   {_, roman_number} = numeral_number(number, roman_number, 1)
-
-#   remove_4_occurrences(roman_number)
-# end
-
-# # number: number to convert to roman
-# # current_roman_number: roman number so far
-# # factor: decimal representation of I, V, X, L, C, M, D, guard would be possible, factor could be one of "I".."M"
-# # I could define dictionary {"I" => 1, "V" => 5...} and use it. Code would become more compact
-# # returns {remaining number, new roman_number}
-# @spec numeral_number(pos_integer, String.t(), pos_integer()) :: {pos_integer(), String.t()}
-# def numeral_number(number, current_roman_number, factor) do
-#   if number >= factor do
-#     number_of = div(number, factor)
-#     roman = String.duplicate(numeral(factor), number_of)
-#     rest = number - number_of * factor
-#     {rest, current_roman_number <> roman}
-#   else
-#     {number, current_roman_number}
-#   end
-# end
