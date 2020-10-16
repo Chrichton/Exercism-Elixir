@@ -12,9 +12,7 @@ defmodule RomanNumerals do
 
   @spec numeral(pos_integer) :: String.t()
   def numeral(number) do
-    roman_number = ""
-
-    {number, roman_number} = numeral_number(number, roman_number, 1000)
+    {number, roman_number} = numeral_number(number, "", 1000)
     {number, roman_number} = numeral_number(number, roman_number, 500)
     {number, roman_number} = numeral_number(number, roman_number, 100)
     {number, roman_number} = numeral_number(number, roman_number, 50)
