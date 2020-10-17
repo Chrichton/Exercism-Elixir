@@ -25,26 +25,27 @@ defmodule RomanNumerals do
   def numeral(number) do
     sorted_roman_literals =
       @roman_digits_to_numbers
-        |> Map.to_list()
-        |> Enum.sort(fn {_, v1}, {_, v2} -> v1 > v2 end)
-        |> Enum.map(fn tuple -> elem(tuple, 0) end)
+      |> Map.to_list()
+      |> Enum.sort(fn {_, v1}, {_, v2} -> v1 > v2 end)
+      |> Enum.map(fn tuple -> elem(tuple, 0) end)
 
     sorted_roman_literals
-      |> Enum.reduce({number, ""}, fn roman_digit, accu ->
+    |> Enum.reduce({number, ""}, fn roman_digit, accu ->
       numeral_number(accu, roman_digit)
     end)
-      |> elem(1)
-      |> remove_4_occurrences()
+    |> elem(1)
+    |> remove_4_occurrences()
   end
 
   # number: number to convert to roman
   # current_roman_number: roman number so far
-  # factor: decimal representation of I, V, X, L, C, M, D, guard would be possible, factor could be one of "I".."M"
-  # I could define dictionary {"I" => 1, "V" => 5...} and use it. Code would become more compact
+  # roman_digit: one of "M", "D", "C", "L", "X", "V", "I"
   # returns {remaining number, new roman_number}
-  #@spec numeral_number({pos_integer, String.t()}, String.t()) :: {pos_integer(), String.t()}
-  defp numeral_number({number, current_roman_number}, roman_digit) do
+  @spec numeral_number({pos_integer, String.t()}, String.t()) :: {pos_integer(), String.t()}
+  defp numeral_number({number, current_roman_number}, roman_digit)
+       when roman_digit in ["M", "D", "C", "L", "X", "V", "I"] do
     factor = Map.fetch!(@roman_digits_to_numbers, roman_digit)
+
     if number >= factor do
       number_of = div(number, factor)
       roman = String.duplicate(roman_digit, number_of)
