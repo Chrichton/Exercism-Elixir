@@ -3,6 +3,16 @@ defmodule RomanNumerals do
   Convert the number to a roman number.
   """
 
+  @roman_digits_to_numbers %{
+    "M" => 1000,
+    "D" => 500,
+    "C" => 100,
+    "L" => 50,
+    "X" => 10,
+    "V" => 5,
+    "I" => 1
+  }
+
   def numeral(1), do: "I"
   def numeral(5), do: "V"
   def numeral(10), do: "X"
@@ -13,25 +23,15 @@ defmodule RomanNumerals do
 
   @spec numeral(pos_integer) :: String.t()
   def numeral(number) do
-    roman_digits_to_numbers = %{
-      "M" => 1000,
-      "D" => 500,
-      "C" => 100,
-      "L" => 50,
-      "X" => 10,
-      "V" => 5,
-      "I" => 1
-    }
-
     sorted_roman_literals =
-      roman_digits_to_numbers
+      @roman_digits_to_numbers
         |> Map.to_list()
         |> Enum.sort(fn {_, v1}, {_, v2} -> v1 > v2 end)
         |> Enum.map(fn tuple -> elem(tuple, 0) end)
 
     sorted_roman_literals
       |> Enum.reduce({number, ""}, fn roman_digit, accu ->
-      numeral_number(accu, roman_digits_to_numbers, roman_digit)
+      numeral_number(accu, roman_digit)
     end)
       |> elem(1)
       |> remove_4_occurrences()
@@ -43,8 +43,8 @@ defmodule RomanNumerals do
   # I could define dictionary {"I" => 1, "V" => 5...} and use it. Code would become more compact
   # returns {remaining number, new roman_number}
   #@spec numeral_number({pos_integer, String.t()}, String.t()) :: {pos_integer(), String.t()}
-  defp numeral_number({number, current_roman_number}, roman_digits_to_numbers, roman_digit) do
-    factor = Map.fetch!(roman_digits_to_numbers, roman_digit)
+  defp numeral_number({number, current_roman_number}, roman_digit) do
+    factor = Map.fetch!(@roman_digits_to_numbers, roman_digit)
     if number >= factor do
       number_of = div(number, factor)
       roman = String.duplicate(roman_digit, number_of)
