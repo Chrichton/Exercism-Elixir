@@ -26,7 +26,7 @@ defmodule RomanNumerals do
     sorted_roman_literals =
       roman_digits_to_numbers
         |> Map.to_list()
-        |> Enum.sort(fn({_, v1}, {_, v2}) -> v1 > v2 end)
+        |> Enum.sort(fn {_, v1}, {_, v2} -> v1 > v2 end)
         |> Enum.map(fn tuple -> elem(tuple, 0) end)
 
     sorted_roman_literals
