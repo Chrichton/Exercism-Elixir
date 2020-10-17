@@ -23,18 +23,12 @@ defmodule RomanNumerals do
 
   @spec numeral(pos_integer) :: String.t()
   def numeral(number) do
-    sorted_roman_literals =
-      @roman_digits_to_numbers
-      |> Map.to_list()
-      |> Enum.sort(fn {_, v1}, {_, v2} -> v1 > v2 end)
-      |> Enum.map(fn tuple -> elem(tuple, 0) end)
-
-    sorted_roman_literals
-    |> Enum.reduce({number, ""}, fn roman_digit, accu ->
-      numeral_number(accu, roman_digit)
-    end)
-    |> elem(1)
-    |> remove_4_occurrences()
+    sorted_roman_literals()
+      |> Enum.reduce({number, ""}, fn roman_digit, accu ->
+        numeral_number(accu, roman_digit)
+      end)
+      |> elem(1)
+      |> remove_4_occurrences()
   end
 
   # number: number to convert to roman
@@ -64,5 +58,12 @@ defmodule RomanNumerals do
       |> String.replace("XXXX", "XL")   # 40
       |> String.replace("VIIII", "IX")  #  9
       |> String.replace("IIII", "IV")   #  4
+  end
+
+  defp sorted_roman_literals() do
+    @roman_digits_to_numbers
+    |> Map.to_list()
+    |> Enum.sort(fn {_, v1}, {_, v2} -> v1 > v2 end)
+    |> Enum.map(fn tuple -> elem(tuple, 0) end)
   end
 end
