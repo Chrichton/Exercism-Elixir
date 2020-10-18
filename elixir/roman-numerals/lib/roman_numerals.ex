@@ -13,22 +13,26 @@ defmodule RomanNumerals do
     "I" => 1
   }
 
-  def numeral(1), do: "I"
-  def numeral(5), do: "V"
-  def numeral(10), do: "X"
-  def numeral(50), do: "L"
-  def numeral(100), do: "C"
-  def numeral(500), do: "D"
-  def numeral(1000), do: "M"
+  @numbers_to_roman_digits for {roman_numeral, number} <- @roman_digits_to_numbers,
+                               into: %{},
+                               do: {number, roman_numeral}
+
+  def numeral(1), do: @numbers_to_roman_digits[1]
+  def numeral(5), do: @numbers_to_roman_digits[5]
+  def numeral(10), do: @numbers_to_roman_digits[10]
+  def numeral(50), do: @numbers_to_roman_digits[50]
+  def numeral(100), do: @numbers_to_roman_digits[100]
+  def numeral(500), do: @numbers_to_roman_digits[500]
+  def numeral(1000), do: @numbers_to_roman_digits[1000]
 
   @spec numeral(pos_integer) :: String.t()
   def numeral(number) do
     sorted_roman_literals()
-      |> Enum.reduce({number, ""}, fn roman_digit, accu ->
-        numeral_number(accu, roman_digit)
-      end)
-      |> elem(1)
-      |> remove_4_occurrences()
+    |> Enum.reduce({number, ""}, fn roman_digit, accu ->
+      numeral_number(accu, roman_digit)
+    end)
+    |> elem(1)
+    |> compact_4_adjacend_identical_roman_digits()
   end
 
   # number: number to convert to roman
@@ -50,14 +54,20 @@ defmodule RomanNumerals do
     end
   end
 
-  defp remove_4_occurrences(roman_number) do
+  defp compact_4_adjacend_identical_roman_digits(roman_number) do
     roman_number
-      |> String.replace("DCCCC", "CM")  #900
-      |> String.replace("CCCC", "CD")   #400
-      |> String.replace("LXXXX", "XC")  # 90
-      |> String.replace("XXXX", "XL")   # 40
-      |> String.replace("VIIII", "IX")  #  9
-      |> String.replace("IIII", "IV")   #  4
+    # 900
+    |> String.replace("DCCCC", "CM")
+    # 400
+    |> String.replace("CCCC", "CD")
+    # 90
+    |> String.replace("LXXXX", "XC")
+    # 40
+    |> String.replace("XXXX", "XL")
+    #  9
+    |> String.replace("VIIII", "IX")
+    #  4
+    |> String.replace("IIII", "IV")
   end
 
   defp sorted_roman_literals() do
