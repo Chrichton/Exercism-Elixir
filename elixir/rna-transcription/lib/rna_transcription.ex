@@ -12,13 +12,9 @@ defmodule RnaTranscription do
     Enum.map(dna, &complement_nucleotide/1)
   end
 
-  @spec complement_nucleotide(integer) :: integer
-  defp complement_nucleotide(nucleotide) do
-    case nucleotide do
-      ?G -> ?C
-      ?C -> ?G
-      ?T -> ?A
-      ?A -> ?U
-    end
-  end
+  @spec complement_nucleotide(char) :: char
+  defp complement_nucleotide(?G), do: ?C
+  defp complement_nucleotide(?C), do: ?G
+  defp complement_nucleotide(?T), do: ?A
+  defp complement_nucleotide(?A), do: ?U
 end
