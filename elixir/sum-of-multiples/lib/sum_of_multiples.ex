@@ -19,9 +19,7 @@ defmodule SumOfMultiples do
       []
     else
       1..count
-      |> Enum.map(fn _ -> number end)
-      |> Enum.zip(1..count)
-      |> Enum.map(fn {number, factor} -> number * factor end)
+      |> Enum.map(fn factor -> number  * factor end)
     end
   end
 end
