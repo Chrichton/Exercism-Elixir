@@ -10,6 +10,8 @@ defmodule Bob do
       asking_in_capitals?(input) -> "Calm down, I know what I'm doing!"
       String.last(input) == "?" -> "Sure."
       talking_forcefully(input) -> "Whatever."
+      only_numbers_separated_by_comma?(input) -> "Whatever."
+
       shouting_in_capitals(input) -> "Whoa, chill out!"
       talking_in_capitals?(input) -> "Whatever."
       String.last(input) == "!" -> "Whoa, chill out!"
@@ -38,6 +40,13 @@ defmodule Bob do
 
   defp question_with_non_letter_characters?(sentence) do
     String.last(sentence) == "?" && String.contains?(sentence, @non_letter_characters)
+  end
+
+  def only_numbers_separated_by_comma?(sentence) do
+    sentence
+    |> String.replace(",", "")
+    |> String.replace(" ", "")
+    |> contains_numbers_only?()
   end
 
   defp question_with_numbers?(sentence),
