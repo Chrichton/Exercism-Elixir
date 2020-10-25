@@ -13,12 +13,14 @@ defmodule SumOfMultiples do
   end
 
   def multiples_of_number_upto_limit(number, limit)
-      when div(limit - 1, number) == 0,
+      when count(number, limit) == 0,
       do: []
 
   def multiples_of_number_upto_limit(number, limit) do
-    count = div(limit - 1, number)
+    count = count(number, limit)
 
     Enum.map(1..count, fn factor -> number * factor end)
   end
+
+  defp count(number, limit), do: div(limit - 1, number)
 end
