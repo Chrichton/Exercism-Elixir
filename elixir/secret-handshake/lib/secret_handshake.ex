@@ -15,18 +15,16 @@ defmodule SecretHandshake do
   """
   @spec commands(code :: integer) :: list(String.t())
   def commands(code) do
-    number_to_binary(code)
+    code
+    |> number_to_binary()
     |> Enum.reverse()
     |> Enum.zip(["wink", "double blink", "close your eyes", "jump", "reverse"])
-    |> Enum.reduce([], fn {bit, text}, acc ->
-      if bit == 1 do
-        if text == "reverse" do
-          Enum.reverse(acc)
-        else
-          [text | acc]
-        end
+    |> Enum.filter(fn {bit, _} -> bit == 1 end)
+    |> Enum.reduce([], fn {_, text}, acc ->
+      if text == "reverse" do
+        Enum.reverse(acc)
       else
-        acc
+        [text | acc]
       end
     end)
     |> Enum.reverse()
