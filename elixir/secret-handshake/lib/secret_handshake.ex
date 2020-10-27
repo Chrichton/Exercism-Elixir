@@ -21,11 +21,7 @@ defmodule SecretHandshake do
     |> Enum.zip(["wink", "double blink", "close your eyes", "jump", "reverse"])
     |> Enum.filter(fn {bit, _} -> bit == 1 end)
     |> Enum.reduce([], fn {_, text}, acc ->
-      if text == "reverse" do
-        Enum.reverse(acc)
-      else
-        [text | acc]
-      end
+      if text == "reverse", do: Enum.reverse(acc), else: [text | acc]
     end)
     |> Enum.reverse()
   end
