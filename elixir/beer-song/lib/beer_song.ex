@@ -38,7 +38,7 @@ defmodule BeerSong do
   @spec lyrics(Range.t()) :: String.t()
   def lyrics(range \\99..0) do
     last_verse_no = range
-    |> Enum.map(fn x -> x end)
+    |> Enum.to_list()
     |> List.last()
 
     p = range
