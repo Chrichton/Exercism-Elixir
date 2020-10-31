@@ -41,12 +41,12 @@ defmodule BeerSong do
     |> Enum.to_list()
     |> List.last()
 
-    p = range
+    (range
     |>
     Enum.take(Enum.count(range) - 1)
     |>
     Enum.reduce("", fn verse_no, accu ->
-      accu <> verse(verse_no) <> "\n" end)
-      p <> verse(last_verse_no)
+      accu <> verse(verse_no) <> "\n" end))
+    <> verse(last_verse_no)
   end
 end
