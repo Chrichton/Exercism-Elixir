@@ -37,16 +37,18 @@ defmodule BeerSong do
   """
   @spec lyrics(Range.t()) :: String.t()
   def lyrics(range \\99..0) do
-    last_verse_no = range
-    |> Enum.to_list()
-    |> List.last()
-
     (range
     |>
     Enum.take(Enum.count(range) - 1)
     |>
     Enum.reduce("", fn verse_no, accu ->
       accu <> verse(verse_no) <> "\n" end))
-    <> verse(last_verse_no)
+    <> verse(last_verse_no(range))
+  end
+
+  defp last_verse_no(range) do
+    range
+    |> Enum.to_list()
+    |> List.last()
   end
 end
