@@ -12,6 +12,8 @@ defmodule SumOfMultiples do
     |> Enum.sum()
   end
 
+  defmacrop count(number, limit), do: div(limit - 1, number)
+
   def multiples_of_number_upto_limit(number, limit)
       when count(number, limit) == 0,
       do: []
@@ -21,6 +23,4 @@ defmodule SumOfMultiples do
 
     Enum.map(1..count, fn factor -> number * factor end)
   end
-
-  defp count(number, limit), do: div(limit - 1, number)
 end
