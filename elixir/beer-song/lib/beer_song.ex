@@ -41,8 +41,8 @@ defmodule BeerSong do
     |>
     Enum.take(Enum.count(range) - 1)
     |>
-    Enum.reduce("", fn verse_no, accu ->
-      accu <> verse(verse_no) <> "\n" end))
+    Enum.map_join(fn verse_no ->
+      verse(verse_no) <> "\n" end))
     <> verse(last_verse_no(range))
   end
 
