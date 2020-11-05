@@ -15,7 +15,17 @@ defmodule Tournament do
 
   @spec tally(input :: list(String.t())) :: String.t()
   def tally(input) do
-    to_map(input)
+    "Team                           | MP |  W |  D |  L |  P\n" <>
+      to_tally_results(input)
+  end
+
+  defp to_tally_results(input) do
+    input
+    |> to_map()
+    |> Enum.map_join("\n", fn {team, %Tournament{} = tournament} ->
+      "#{String.pad_trailing(team, 31)}|  #{tournament.wins + tournament.draws + tournament.losses} |  #{tournament.wins} |  #{tournament.draws} |  #{tournament.losses} |  #{
+3 * tournament.wins + tournament.losses}"
+    end)
   end
 
   defp to_map(input) do
@@ -35,10 +45,10 @@ defmodule Tournament do
         "draw" ->
           acc
           |> Map.update(first_team, %Tournament{draws: 1}, fn tournament ->
-            %Tournament{tournament | losses: tournament.draws + 1}
+            %Tournament{tournament | draws: tournament.draws + 1}
           end)
           |> Map.update(second_team, %Tournament{draws: 1}, fn tournament ->
-            %Tournament{tournament | losses: tournament.draws + 1}
+            %Tournament{tournament | draws: tournament.draws + 1}
           end)
 
         "loss" ->
