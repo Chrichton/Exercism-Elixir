@@ -33,37 +33,55 @@ defmodule Tournament do
 
   defp to_map(input) do
     input
+    |> Enum.filter(&(has_two_semicolons(&1)))
     |> Enum.map(fn line -> String.split(line, ";") end)
-    |> Enum.reduce(%{}, fn [first_team, second_team, result], acc ->
+    |> Enum.reduce(%{}, fn [first_team, second_team, result | _], acc ->
       case result do
         "win" ->
-          acc
-          |> Map.update(first_team, %Tournament{wins: 1, points: 3}, fn tournament ->
-            %Tournament{tournament | wins: tournament.wins + 1, points: tournament.points + 3}
-          end)
-          |> Map.update(second_team, %Tournament{losses: 1}, fn tournament ->
-            %Tournament{tournament | losses: tournament.losses + 1}
-          end)
+          update_win(acc, first_team, second_team)
 
         "draw" ->
-          acc
-          |> Map.update(first_team, %Tournament{draws: 1, points: 1}, fn tournament ->
-            %Tournament{tournament | draws: tournament.draws + 1}
-          end)
-          |> Map.update(second_team, %Tournament{draws: 1, points: 1}, fn tournament ->
-            %Tournament{tournament | draws: tournament.draws + 1, points: tournament.points + 1}
-          end)
+          update_draw(acc, first_team, second_team)
 
         "loss" ->
-          acc
-          |> Map.update(second_team, %Tournament{wins: 1, points: 3}, fn tournament ->
-            %Tournament{tournament | wins: tournament.wins + 1, points: tournament.points + 3}
-          end)
-          |> Map.update(first_team, %Tournament{losses: 1}, fn tournament ->
-            %Tournament{tournament | losses: tournament.losses + 1}
-          end)
+          update_win(acc, second_team, first_team)
+
+        _ -> acc
       end
     end)
-    |> Enum.sort_by(fn {_, %Tournament{} = tournament} -> tournament.points end, :desc)
+    |> Enum.sort_by(
+      fn {team, %Tournament{} = tournament} -> {tournament.points, team} end,
+      :desc
+    )
+  end
+
+  def has_two_semicolons(line) do
+    line
+    |> String.codepoints()
+    |> Enum.filter(&(&1 == ";"))
+    |> Enum.count() == 2
+  end
+
+  defp update_win(map, first_team, second_team) do
+    map
+    |> Map.update(first_team, %Tournament{wins: 1, points: 3}, fn tournament ->
+      %Tournament{tournament | wins: tournament.wins + 1, points: tournament.points + 3}
+    end)
+    |> Map.update(second_team, %Tournament{losses: 1}, fn tournament ->
+      %Tournament{tournament | losses: tournament.losses + 1}
+    end)
+  end
+
+  defp update_draw(map, first_team, second_team) do
+    map
+    |> update_draw(first_team)
+    |> update_draw(second_team)
+  end
+
+  defp update_draw(map, team) do
+    map
+    |> Map.update(team, %Tournament{draws: 1, points: 1}, fn tournament ->
+      %Tournament{tournament | draws: tournament.draws + 1, points: tournament.points + 1}
+    end)
   end
 end
