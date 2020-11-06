@@ -33,7 +33,7 @@ defmodule Tournament do
 
   defp to_map(input) do
     input
-    |> Enum.filter(&(has_two_semicolons(&1)))
+    |> Enum.filter(&has_two_semicolons(&1))
     |> Enum.map(fn line -> String.split(line, ";") end)
     |> Enum.reduce(%{}, fn [first_team, second_team, result | _], acc ->
       case result do
@@ -46,14 +46,35 @@ defmodule Tournament do
         "loss" ->
           update_win(acc, second_team, first_team)
 
-        _ -> acc
+        _ ->
+          acc
       end
     end)
     |> Enum.sort_by(
-      fn {team, %Tournament{} = tournament} -> {tournament.points, team} end,
-      :desc
+      fn {team, %Tournament{} = tournament} -> {team, tournament.points} end,
+      &compare_tournaments/2
     )
   end
+
+  defp compare_tournaments(left, right) do
+    left_team = elem(left, 0)
+    left_points = elem(left, 1)
+    right_team = elem(right, 0)
+    right_points = elem(right, 1)
+
+    if left_points == right_points,
+      do: left_team < right_team,
+      else: left_points > right_points
+  end
+
+  # defp compare_tournaments(
+  #        {team, points} = left,
+  #        {team, points} = right
+  #      ),
+  #      do:
+  #        if left == right.points,
+  #          do: left.team < right.team,
+  #          else: left.points > right.points
 
   def has_two_semicolons(line) do
     line
