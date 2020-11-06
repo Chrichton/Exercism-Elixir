@@ -56,25 +56,11 @@ defmodule Tournament do
     )
   end
 
-  defp compare_tournaments(left, right) do
-    left_team = elem(left, 0)
-    left_points = elem(left, 1)
-    right_team = elem(right, 0)
-    right_points = elem(right, 1)
-
+  defp compare_tournaments({left_team, left_points}, {right_team, right_points}) do
     if left_points == right_points,
       do: left_team < right_team,
       else: left_points > right_points
   end
-
-  # defp compare_tournaments(
-  #        {team, points} = left,
-  #        {team, points} = right
-  #      ),
-  #      do:
-  #        if left == right.points,
-  #          do: left.team < right.team,
-  #          else: left.points > right.points
 
   def has_two_semicolons(line) do
     line
