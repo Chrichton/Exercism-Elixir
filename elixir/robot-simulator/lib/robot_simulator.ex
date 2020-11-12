@@ -4,13 +4,22 @@ defmodule RobotSimulator do
 
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
-  defmodule Robot do
-    defstruct direction: :north, position: {0, 0}
-  end
 
   @valid_directions [:north, :east, :south, :west]
 
-  @spec create(direction :: atom, position :: {integer, integer}) :: any
+  defmodule Robot do
+    defstruct [:direction, :position]
+
+    @type direction :: {:north | :east | :south | :west}
+
+    @type t :: %__MODULE__{
+      direction: direction(),
+      position: {integer(), integer()}
+    }
+
+  end
+
+  @spec create(direction :: Robot.direction(), position :: {integer, integer}) :: Robot.t()
   def create(direction \\ :north, position \\ {0, 0})
 
   def create(direction, {x, y} = position)
@@ -27,7 +36,7 @@ defmodule RobotSimulator do
 
   Valid instructions are: "R" (turn right), "L", (turn left), and "A" (advance)
   """
-  @spec simulate(robot :: Robot.t(), instructions :: String.t()) :: any
+  @spec simulate(robot :: Robot.t(), instructions :: String.t()) :: Robot.t()
   def simulate(robot = %Robot{}, instructions) do
     instructions
     |> String.codepoints()
@@ -43,7 +52,7 @@ defmodule RobotSimulator do
 
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
-  @spec direction(robot :: Robot.t()) :: atom
+  @spec direction(robot :: Robot.t()) :: Robot.direction
   def direction(robot = %Robot{}) do
     robot.direction
   end
