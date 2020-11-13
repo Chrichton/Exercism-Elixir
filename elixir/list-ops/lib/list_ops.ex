@@ -20,16 +20,30 @@ defmodule ListOps do
     do: reverse_recursive(rest, [head | acc])
 
   @spec map(list, (any -> any)) :: list
-  def map(l, f) do
-  end
+  def map(l, f), do: map_recursive(l, f, [])
+
+  defp map_recursive([], _, acc), do: reverse(acc)
+
+  defp map_recursive([head | rest], f, acc), do: map_recursive(rest, f, [f.(head) | acc])
 
   @spec filter(list, (any -> as_boolean(term))) :: list
-  def filter(l, f) do
-  end
+  def filter(l, f), do: filter_recursive(l, f, [])
+
+  defp filter_recursive([], _, acc), do: reverse(acc)
+
+  defp filter_recursive([head | rest], f, acc),
+    do:
+      if(f.(head),
+        do: filter_recursive(rest, f, [head | acc]),
+        else: filter_recursive(rest, f, acc)
+      )
 
   @type acc :: any
   @spec reduce(list, acc, (any, acc -> acc)) :: acc
-  def reduce(l, acc, f) do
+  def reduce([], _, _), do: []
+
+  def reduce([head | rest], acc, f) do
+    reduce(rest, f.(head, acc), f)
   end
 
   @spec append(list, list) :: list
