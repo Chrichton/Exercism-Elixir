@@ -40,7 +40,7 @@ defmodule ListOps do
 
   @type acc :: any
   @spec reduce(list, acc, (any, acc -> acc)) :: acc
-  def reduce([], _, _), do: []
+  def reduce([], acc, _), do: acc
 
   def reduce([head | rest], acc, f) do
     reduce(rest, f.(head, acc), f)
