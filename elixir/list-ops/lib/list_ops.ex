@@ -12,8 +12,12 @@ defmodule ListOps do
   def count([_ | rest]), do: 1 + count(rest)
 
   @spec reverse(list) :: list
-  def reverse([]), do: []
-  def reverse([head | rest]), do: [reverse(rest), head]
+  def reverse(l), do: reverse_recursive(l, [])
+
+  defp reverse_recursive([], acc), do: acc
+
+  defp reverse_recursive([head | rest], acc),
+    do: reverse_recursive(rest, [head | acc])
 
   @spec map(list, (any -> any)) :: list
   def map(l, f) do
