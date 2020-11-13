@@ -47,8 +47,10 @@ defmodule ListOps do
   end
 
   @spec append(list, list) :: list
-  def append(a, b) do
-  end
+  def append(a, b), do: append_recursives(reverse(a), b)
+
+  defp append_recursives([], accu), do: accu
+  defp append_recursives([head | rest], accu), do: append_recursives(rest, [head | accu])
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
