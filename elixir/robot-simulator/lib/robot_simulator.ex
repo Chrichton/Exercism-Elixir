@@ -5,16 +5,26 @@ defmodule RobotSimulator do
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
 
-  defstruct direction: :north, position: {0, 0}
-
   @valid_directions [:north, :east, :south, :west]
 
-  @spec create(direction :: atom, position :: {integer, integer}) :: any
+  defmodule Robot do
+    defstruct [:direction, :position]
+
+    @type direction :: {:north | :east | :south | :west}
+
+    @type t :: %__MODULE__{
+      direction: direction(),
+      position: {integer(), integer()}
+    }
+
+  end
+
+  @spec create(direction :: Robot.direction(), position :: {integer, integer}) :: Robot.t()
   def create(direction \\ :north, position \\ {0, 0})
 
   def create(direction, {x, y} = position)
       when direction in @valid_directions and is_integer(x) and is_integer(y),
-      do: %RobotSimulator{direction: direction, position: position}
+      do: %Robot{direction: direction, position: position}
 
   def create(direction, _) when direction in @valid_directions,
     do: {:error, "invalid position"}
@@ -26,8 +36,8 @@ defmodule RobotSimulator do
 
   Valid instructions are: "R" (turn right), "L", (turn left), and "A" (advance)
   """
-  @spec simulate(robot :: any, instructions :: String.t()) :: any
-  def simulate(robot, instructions) do
+  @spec simulate(robot :: Robot.t(), instructions :: String.t()) :: Robot.t()
+  def simulate(robot = %Robot{}, instructions) do
     instructions
     |> String.codepoints()
     |> Enum.reduce(robot, fn character, acc ->
@@ -42,20 +52,20 @@ defmodule RobotSimulator do
 
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
-  @spec direction(robot :: any) :: atom
-  def direction(robot) do
+  @spec direction(robot :: Robot.t()) :: Robot.direction
+  def direction(robot = %Robot{}) do
     robot.direction
   end
 
   @doc """
   Return the robot's position.
   """
-  @spec position(robot :: any) :: {integer, integer}
-  def position(robot) do
+  @spec position(robot :: Robot.t()) :: {integer, integer}
+  def position(robot = %Robot{}) do
     robot.position
   end
 
-  defp execute_command(robot, character) do
+  defp execute_command(robot = %Robot{}, character) do
     case character do
       "R" -> turn_right(robot)
       "A" -> advance(robot)
@@ -64,32 +74,32 @@ defmodule RobotSimulator do
     end
   end
 
-  defp turn_right(robot) do
-    case robot.direction do
-      :north -> %RobotSimulator{robot | direction: :east}
-      :east -> %RobotSimulator{robot | direction: :south}
-      :south -> %RobotSimulator{robot | direction: :west}
-      :west -> %RobotSimulator{robot | direction: :north}
-    end
+  defp turn_right(robot = %Robot{direction: d}) do
+    %Robot{robot | direction: right(d)}
   end
 
-  defp turn_left(robot) do
-    case robot.direction do
-      :north -> %RobotSimulator{robot | direction: :west}
-      :east -> %RobotSimulator{robot | direction: :north}
-      :south -> %RobotSimulator{robot | direction: :east}
-      :west -> %RobotSimulator{robot | direction: :south}
-    end
+  defp right(:north), do: :east
+  defp right(:east), do: :south
+  defp right(:south), do: :west
+  defp right(:west), do: :north
+
+  defp turn_left(robot = %Robot{direction: d}) do
+    %Robot{robot | direction: left(d)}
   end
 
-  defp advance(robot) do
+  defp left(:north), do: :west
+  defp left(:east), do: :north
+  defp left(:south), do: :east
+  defp left(:west), do: :south
+
+  defp advance(robot = %Robot{}) do
     {x, y} = robot.position
 
     case robot.direction do
-      :north -> %RobotSimulator{robot | position: {x, y + 1}}
-      :east -> %RobotSimulator{robot | position: {x + 1, y}}
-      :south -> %RobotSimulator{robot | position: {x, y - 1}}
-      :west -> %RobotSimulator{robot | position: {x - 1, y}}
+      :north -> %Robot{robot | position: {x, y + 1}}
+      :east -> %Robot{robot | position: {x + 1, y}}
+      :south -> %Robot{robot | position: {x, y - 1}}
+      :west -> %Robot{robot | position: {x - 1, y}}
     end
   end
 end

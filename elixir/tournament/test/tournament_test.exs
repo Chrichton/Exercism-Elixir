@@ -1,7 +1,7 @@
 defmodule TournamentTest do
   use ExUnit.Case
 
-  # @tag :pending
+  @tag :pending
   test "typical input" do
     input = [
       "Allegoric Alaskans;Blithering Badgers;win",
@@ -47,7 +47,7 @@ defmodule TournamentTest do
     assert Tournament.tally(input) == expected
   end
 
-  @tag :pending
+  # @tag :pending
   test "ties broken alphabetically" do
     input = [
       "Courageous Californians;Devastating Donkeys;win",
