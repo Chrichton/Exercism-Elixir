@@ -22,8 +22,6 @@ defmodule Grains do
     {:ok, number_of_grains}
   end
 
-  def pow_2(exponent), do: pow_2_recursive(exponent, 1)
-
-  def pow_2_recursive(0, accu), do: accu
-  def pow_2_recursive(exponent, accu), do: pow_2_recursive(exponent - 1, accu * 2)
+  def pow_2(0), do: 1
+  def pow_2(exponent), do: 1..exponent |> Enum.reduce(1, fn _, accu -> 2 * accu end)
 end
