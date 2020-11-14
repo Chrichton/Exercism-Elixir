@@ -7,7 +7,7 @@ defmodule Grains do
     do: {:error, "The requested square must be between 1 and 64 (inclusive)"}
 
   def square(number) do
-    {:ok, :math.pow(2, number - 1) |> round()}
+    {:ok, pow_2(number - 1)}
   end
 
   @doc """
@@ -17,8 +17,13 @@ defmodule Grains do
   def total do
     number_of_grains =
       1..64
-      |> Enum.reduce(0, fn square_no, acc -> (acc + :math.pow(2, square_no - 1)) |> round() end)
+      |> Enum.reduce(0, fn square_no, acc -> acc + pow_2(square_no - 1) end)
 
     {:ok, number_of_grains}
   end
+
+  def pow_2(exponent), do: pow_2_recursive(exponent, 1)
+
+  def pow_2_recursive(0, accu), do: accu
+  def pow_2_recursive(exponent, accu), do: pow_2_recursive(exponent - 1, accu * 2)
 end
