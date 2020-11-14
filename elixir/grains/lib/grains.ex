@@ -15,11 +15,9 @@ defmodule Grains do
   """
   @spec total :: pos_integer
   def total do
-    number_of_grains =
-      1..64
-      |> Enum.reduce(0, fn square_no, acc -> acc + pow_2(square_no - 1) end)
-
-    {:ok, number_of_grains}
+    {:ok,
+     1..64
+     |> Enum.reduce(0, fn square_no, acc -> acc + pow_2(square_no - 1) end)}
   end
 
   def pow_2(0), do: 1
