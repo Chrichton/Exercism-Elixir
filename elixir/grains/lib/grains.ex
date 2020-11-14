@@ -17,9 +17,9 @@ defmodule Grains do
   def total do
     {:ok,
      1..64
-     |> Enum.reduce(0, fn square_no, acc -> acc + pow_2(square_no - 1) end)}
+     |> Enum.reduce(0, fn square_no, acc -> acc + Kernel.elem(square(square_no), 1) end)}
   end
 
-  def pow_2(0), do: 1
-  def pow_2(exponent), do: 1..exponent |> Enum.reduce(1, fn _, accu -> 2 * accu end)
+  defp pow_2(0), do: 1
+  defp pow_2(exponent), do: 1..exponent |> Enum.reduce(1, fn _, accu -> 2 * accu end)
 end
