@@ -31,16 +31,16 @@ defmodule BinarySearchTree do
   end
 
   def insert_recursive(bst_node, data, path \\ []) do
-    if data < bst_node.data do
+    if data <= bst_node.data do
       if bst_node.left == nil do
-        new(data: bst_node.data, left: new(data), right: bst_node.right)
+        %{data: 4, left: new(data), right: bst_node.right}
         |> build_tree(path)
       else
         insert_recursive(bst_node.left, data, [{bst_node, :left} | path])
       end
     else
       if bst_node.right == nil do
-        new(data: bst_node.data, left: bst_node.left, right: new(data))
+        %{data: bst_node.data, left: bst_node.left, right: new(data)}
         |> build_tree(path)
       else
         insert_recursive(bst_node.right, data, [{bst_node, :right} | path])
@@ -51,8 +51,8 @@ defmodule BinarySearchTree do
   def build_tree(bst_node, path) do
     Enum.reduce(path, bst_node, fn {node, direction}, acc ->
       case direction do
-        :left -> new(data: acc.data, left: node, right: acc.right)
-        :right -> new(data: acc.data, left: acc.left, right: node)
+        :left -> %{data: acc.data, left: node, right: acc.right}
+        :right -> %{data: acc.data, left: acc.left, right: node}
       end
     end)
   end

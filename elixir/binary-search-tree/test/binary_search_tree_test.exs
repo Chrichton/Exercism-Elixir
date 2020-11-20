@@ -16,7 +16,7 @@ defmodule BinarySearchTreeTest do
       assert root.left.data == 2
     end
 
-    @tag :pending
+    # @tag :pending
     test "same number at left node" do
       root =
         BinarySearchTree.new(4)
@@ -26,7 +26,7 @@ defmodule BinarySearchTreeTest do
       assert root.left.data == 4
     end
 
-    @tag :pending
+    # @tag :pending
     test "greater number at right node" do
       root =
         BinarySearchTree.new(4)
@@ -37,7 +37,7 @@ defmodule BinarySearchTreeTest do
     end
   end
 
-  @tag :pending
+  # @tag :pending
   test "can create complex tree" do
     root =
       BinarySearchTree.new(4)
