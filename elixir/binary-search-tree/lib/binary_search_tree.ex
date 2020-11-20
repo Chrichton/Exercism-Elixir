@@ -51,8 +51,8 @@ defmodule BinarySearchTree do
   def build_tree(bst_node, path) do
     Enum.reduce(path, bst_node, fn {node, direction}, acc ->
       case direction do
-        :left -> %{data: node.data, left: node, right: acc.right}
-        :right -> %{data: node.data, left: acc.left, right: node}
+        :left -> %{data: node.data, left: acc, right: node.right}
+        :right -> %{data: node.data, left: node.left, right: acc}
       end
     end)
   end
