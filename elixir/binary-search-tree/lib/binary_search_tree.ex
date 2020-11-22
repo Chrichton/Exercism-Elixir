@@ -48,12 +48,12 @@ defmodule BinarySearchTree do
   @spec in_order(bst_node) :: [any]
   def in_order(tree), do: in_order_recursive(tree)
 
+  def in_order_recursive(nil), do: []
+
   def in_order_recursive(bst_node) do
     get_path_recursive(bst_node)
     |> Enum.reduce([], fn node, acc ->
-      if node.right == nil,
-        do: [node.data | acc],
-        else: [node.data | in_order_recursive(node.right)] ++ acc
+      [node.data | in_order_recursive(node.right)] ++ acc
     end)
   end
 
