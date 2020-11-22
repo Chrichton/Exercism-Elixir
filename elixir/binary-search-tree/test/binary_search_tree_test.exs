@@ -65,7 +65,7 @@ defmodule BinarySearchTreeTest do
       assert [4] == BinarySearchTree.in_order(root)
     end
 
-    @tag :pending
+    # @tag :pending
     test "can sort if second number is smaller than first" do
       root =
         BinarySearchTree.new(4)
