@@ -13,22 +13,7 @@ defmodule BinarySearchTree do
   Creates and inserts a node with its value as 'data' into the tree.
   """
   @spec insert(bst_node, any) :: bst_node
-  def insert(tree, data) do
-    insert_recursive(tree, data)
-    # if data < tree.data do
-    #   if tree.left == nil do
-    #     tree.left = new(data)
-    #   else
-    #     insert(tree.left, data)
-    #   end
-    # else
-    #   if tree.right == nil do
-    #     tree.right = new(data)
-    #   else
-    #     insert(tree.right, data)
-    #   end
-    # end
-  end
+  def insert(tree, data), do: insert_recursive(tree, data)
 
   def insert_recursive(bst_node, data, path \\ []) do
     if data <= bst_node.data do
@@ -61,7 +46,21 @@ defmodule BinarySearchTree do
   Traverses the Binary Search Tree in order and returns a list of each node's data.
   """
   @spec in_order(bst_node) :: [any]
-  def in_order(tree) do
-    # Your implementation here
+  def in_order(tree), do: in_order_recursive(tree)
+
+  def in_order_recursive(bst_node, path \\ []) do
+    if bst_node.left == nil do
+      if bst_node.right == nil do
+        if path == [] do
+          [bst_node.data]
+        else
+          bst_node.data ++ in_order_recursive(hd(path), tl(path))
+        end
+      else
+        bst_node.data ++ in_order_recursive(bst_node.right, path)
+      end
+    else
+      in_order_recursive(bst_node.left, [bst_node | path])
+    end
   end
 end

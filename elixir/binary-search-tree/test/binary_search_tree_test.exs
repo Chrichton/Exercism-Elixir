@@ -58,7 +58,7 @@ defmodule BinarySearchTreeTest do
   end
 
   describe "can sort data" do
-    @tag :pending
+    # @tag :pending
     test "can sort single number" do
       root = BinarySearchTree.new(4)
 
