@@ -74,7 +74,7 @@ defmodule BinarySearchTreeTest do
       assert [2, 4] == BinarySearchTree.in_order(root)
     end
 
-    @tag :pending
+    # @tag :pending
     test "can sort if second number is the same as the first" do
       root =
         BinarySearchTree.new(4)
@@ -83,7 +83,7 @@ defmodule BinarySearchTreeTest do
       assert [4, 4] == BinarySearchTree.in_order(root)
     end
 
-    @tag :pending
+    # @tag :pending
     test "can sort if second number is greater than the first" do
       root =
         BinarySearchTree.new(4)
@@ -92,7 +92,7 @@ defmodule BinarySearchTreeTest do
       assert [4, 5] == BinarySearchTree.in_order(root)
     end
 
-    @tag :pending
+    # @tag :pending
     test "can sort complex tree" do
       root =
         BinarySearchTree.new(2)

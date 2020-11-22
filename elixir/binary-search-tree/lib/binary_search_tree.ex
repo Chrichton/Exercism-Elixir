@@ -48,27 +48,17 @@ defmodule BinarySearchTree do
   @spec in_order(bst_node) :: [any]
   def in_order(tree), do: in_order_recursive(tree)
 
-  def in_order_recursive(bst_node, path \\ [], direction \\ :down) do
-    if bst_node.left == nil do
-      if bst_node.right == nil do
-        if path == [] do
-          [bst_node.data]
-        else
-          [bst_node.data | in_order_recursive(hd(path), tl(path), :up)]
-        end
-      else
-        [bst_node.data | in_order_recursive(bst_node.right, path, :up)]
-      end
-    else
-      if direction == :down do
-        in_order_recursive(bst_node.left, [bst_node | path])
-      else
-        if path == [] do
-          [bst_node.data]
-        else
-          bst_node.data ++ in_order_recursive(hd(path), tl(path), :up)
-        end
-      end
-    end
+  def in_order_recursive(bst_node) do
+    get_path_recursive(bst_node)
+    |> Enum.reduce([], fn node, acc ->
+      if node.right == nil,
+        do: [node.data | acc],
+        else: [node.data | in_order_recursive(node.right)] ++ acc
+    end)
   end
+
+  def get_path_recursive(nil), do: []
+
+  def get_path_recursive(bst_node),
+    do: [bst_node | get_path_recursive(bst_node.left)]
 end
