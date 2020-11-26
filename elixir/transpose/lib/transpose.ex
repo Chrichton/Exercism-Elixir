@@ -22,14 +22,7 @@ defmodule Transpose do
     |> to_rows()
     |> transpose_recursive()
     |> Enum.join("\n")
-  end
-
-  def transpose_recursive(rows) do
-    {row, remaining_rows} = transpose_first_column(rows)
-
-    if Enum.flat_map(remaining_rows, fn x -> x end) == [],
-      do: row,
-      else: [row | transpose_recursive(remaining_rows)]
+    |> String.trim_trailing()
   end
 
   # "ab\ncd" -> [["a", "b"], ["c", "d"]]
@@ -45,9 +38,22 @@ defmodule Transpose do
     Enum.map(lines, fn line -> String.pad_trailing(line, max_line_length) end)
   end
 
-  # empty list
-  def transpose_first_column([[]]), do: {[], []}
+  @spec transpose_recursive(any) :: [any]
+  def transpose_recursive([[]]), do: []
 
-  def transpose_first_column(rows),
-    do: {Enum.map(rows, fn [head | _] -> head end), Enum.map(rows, fn [_ | tail] -> tail end)}
+  def transpose_recursive(rows) do
+    {row, remaining_rows} = transpose_first_column(rows)
+    [row | transpose_recursive(remaining_rows)]
+  end
+
+  def transpose_first_column(rows) do
+    row = Enum.map(rows, fn [head | _] -> head end)
+    remaining_rows = Enum.map(rows, fn [_ | tail] -> tail end)
+
+    if is_empty(remaining_rows),
+      do: {row, [[]]},
+      else: {row, remaining_rows}
+  end
+
+  def is_empty(rows), do: Enum.flat_map(rows, fn x -> x end) == []
 end
