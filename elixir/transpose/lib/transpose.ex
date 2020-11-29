@@ -50,10 +50,10 @@ defmodule Transpose do
     row = Enum.map(rows, fn [head | _] -> head end)
     remaining_rows = Enum.map(rows, fn [_ | tail] -> tail end)
 
-    if is_empty(remaining_rows),
+    if empty?(remaining_rows),
       do: {row, [[]]},
       else: {row, remaining_rows}
   end
 
-  def is_empty(rows), do: Enum.flat_map(rows, fn x -> x end) == []
+  def empty?(rows), do: Enum.flat_map(rows, fn x -> x end) == []
 end
