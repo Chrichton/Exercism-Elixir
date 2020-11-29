@@ -13,10 +13,9 @@ defmodule RobotSimulator do
     @type direction :: {:north | :east | :south | :west}
 
     @type t :: %__MODULE__{
-      direction: direction(),
-      position: {integer(), integer()}
-    }
-
+            direction: direction(),
+            position: {integer(), integer()}
+          }
   end
 
   @spec create(direction :: Robot.direction(), position :: {integer, integer}) :: Robot.t()
@@ -40,11 +39,7 @@ defmodule RobotSimulator do
   def simulate(robot = %Robot{}, instructions) do
     instructions
     |> String.codepoints()
-    |> Enum.reduce(robot, fn character, acc ->
-      if acc == {:error, "invalid instruction"},
-        do: acc,
-        else: execute_command(acc, character)
-    end)
+    |> Enum.reduce_while(robot, &(execute_command(&2, &1)))
   end
 
   @doc """
@@ -52,7 +47,7 @@ defmodule RobotSimulator do
 
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
-  @spec direction(robot :: Robot.t()) :: Robot.direction
+  @spec direction(robot :: Robot.t()) :: Robot.direction()
   def direction(robot = %Robot{}) do
     robot.direction
   end
@@ -67,10 +62,10 @@ defmodule RobotSimulator do
 
   defp execute_command(robot = %Robot{}, character) do
     case character do
-      "R" -> turn_right(robot)
-      "A" -> advance(robot)
-      "L" -> turn_left(robot)
-      _ -> {:error, "invalid instruction"}
+      "R" -> {:cont, turn_right(robot)}
+      "A" -> {:cont, advance(robot)}
+      "L" -> {:cont, turn_left(robot)}
+      _ -> {:halt, {:error, "invalid instruction"}}
     end
   end
 
