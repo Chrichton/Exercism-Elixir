@@ -6,6 +6,13 @@ defmodule DiamondTest do
     assert Diamond.get_letters(?D) == "ABCD"
   end
 
+  test "get_max_width" do
+    assert Diamond.get_max_width(0) == 1
+    assert Diamond.get_max_width(1) == 3
+    assert Diamond.get_max_width(2) == 5
+    assert Diamond.get_max_width(3) == 7
+  end
+
   test "get_line" do
     assert Diamond.get_line("A", 2, 5) == "  A  "
     assert Diamond.get_line("B", 1, 5) == " B B "
@@ -32,7 +39,7 @@ defmodule DiamondTest do
            """
   end
 
-  @tag :pending
+  # @tag :pending
   test "letter E" do
     shape = Diamond.build_shape(?E)
 

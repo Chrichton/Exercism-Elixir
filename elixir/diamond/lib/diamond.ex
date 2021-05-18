@@ -31,14 +31,17 @@ defmodule Diamond do
   def get_letters(letter) when letter >= ?A, do: ?A..letter |> Enum.to_list() |> List.to_string()
 
   def get_line("A", padding, _width) do
+    IO.inspect(padding, label: "start get_line")
     String.duplicate(" ", padding) <> "A" <> String.duplicate(" ", padding)
   end
 
   def get_line(letter, padding, width) do
+    IO.inspect({letter, padding, width}, label: "start get_line")
+
     String.duplicate(" ", padding) <>
       letter <>
       String.duplicate(" ", width - 2 * (padding + 1)) <> letter <> String.duplicate(" ", padding)
   end
 
-  def get_max_width(max_index), do: max_index + 3
+  def get_max_width(max_index), do: 2 * max_index + 1
 end
