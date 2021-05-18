@@ -9,16 +9,16 @@ defmodule Diamond do
   def build_shape(letter) do
     letters = get_letters(letter)
     max_index = String.length(letters) - 1
-    max_width = get_width(max_index)
-    build_lines(letters, max_width)
+    width = get_width(max_index)
+    build_lines(letters, width)
   end
 
-  def build_lines(letters, max_width) do
+  def build_lines(letters, width) do
     upper_diamond =
       letters
       |> String.codepoints()
       |> Enum.zip((String.length(letters) - 1)..0)
-      |> Enum.map(fn {letter, padding} -> get_line(letter, padding, max_width) end)
+      |> Enum.map(fn {letter, padding} -> get_line(letter, padding, width) end)
 
     lower_diamond =
       upper_diamond
