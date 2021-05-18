@@ -18,7 +18,7 @@ defmodule RobotSimulator do
           }
   end
 
-  @spec create(direction :: Robot.direction(), position :: {integer, integer}) :: Robot.t()
+  # @spec create(direction :: Robot.direction(), position :: {integer, integer):: Robot.t() | {:error, String.t()}
   def create(direction \\ :north, position \\ {0, 0})
 
   def create(direction, {x, y} = position)
@@ -39,7 +39,7 @@ defmodule RobotSimulator do
   def simulate(robot = %Robot{}, instructions) do
     instructions
     |> String.codepoints()
-    |> Enum.reduce_while(robot, &(execute_command(&2, &1)))
+    |> Enum.reduce_while(robot, &execute_command(&2, &1))
   end
 
   @doc """
