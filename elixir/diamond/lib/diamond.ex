@@ -9,7 +9,7 @@ defmodule Diamond do
   def build_shape(letter) do
     letters = get_letters(letter)
     max_index = String.length(letters) - 1
-    max_width = get_max_width(max_index)
+    max_width = get_width(max_index)
     build_lines(letters, max_width)
   end
 
@@ -43,5 +43,5 @@ defmodule Diamond do
       String.duplicate(" ", width - 2 * (padding + 1)) <> letter <> String.duplicate(" ", padding)
   end
 
-  def get_max_width(max_index), do: 2 * max_index + 1
+  def get_width(max_index), do: 2 * max_index + 1
 end

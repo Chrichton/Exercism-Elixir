@@ -6,11 +6,11 @@ defmodule DiamondTest do
     assert Diamond.get_letters(?D) == "ABCD"
   end
 
-  test "get_max_width" do
-    assert Diamond.get_max_width(0) == 1
-    assert Diamond.get_max_width(1) == 3
-    assert Diamond.get_max_width(2) == 5
-    assert Diamond.get_max_width(3) == 7
+  test "get_width" do
+    assert Diamond.get_width(0) == 1
+    assert Diamond.get_width(1) == 3
+    assert Diamond.get_width(2) == 5
+    assert Diamond.get_width(3) == 7
   end
 
   test "get_line" do
