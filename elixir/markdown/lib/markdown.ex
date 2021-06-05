@@ -29,21 +29,34 @@ defmodule Markdown do
         |> enclose_with_header_tag()
 
       String.starts_with?(t, "*") ->
-        t |> parse_list_md_level()
+        parse_list_md_level(t)
 
       true ->
-        t |> String.split() |> enclose_with_paragraph_tag()
+        t
+        |> String.split()
+        |> enclose_with_paragraph_tag()
     end
   end
 
-  def parse_header_md_level(hwt) do
+  defp parse_header_md_level(hwt) do
     [h | t] = String.split(hwt)
-    {h |> String.length() |> to_string(), Enum.join(t, " ")}
+
+    {
+      h
+      |> String.length()
+      |> to_string(),
+      Enum.join(t, " ")
+    }
   end
 
   defp parse_list_md_level(l) do
-    t = String.split(String.trim_leading(l, "* "))
-    "<li>" <> join_words_with_tags(t) <> "</li>"
+    list_markup =
+      l
+      |> String.trim_leading("* ")
+      |> String.split()
+      |> join_words_with_tags()
+
+    "<li>" <> list_markup <> "</li>"
   end
 
   defp enclose_with_header_tag({hl, htl}) do
