@@ -63,11 +63,8 @@ defmodule Markdown do
     "<p>#{join_words_with_tags(t)}</p>"
   end
 
-  defp join_words_with_tags(t) do
-    t
-    |> Enum.map(&replace_md_with_tag/1)
-    |> Enum.join(" ")
-  end
+  defp join_words_with_tags(t),
+    do: Enum.map_join(t, " ", &replace_md_with_tag/1)
 
   defp replace_md_with_tag(w) do
     w
