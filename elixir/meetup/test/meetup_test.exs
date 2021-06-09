@@ -7,121 +7,121 @@ defmodule MeetupTest do
     assert Date.compare(date, ~D[2013-05-13]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "monteenth of august 2013" do
     date = Meetup.meetup(2013, 8, :monday, :teenth)
     assert Date.compare(date, ~D[2013-08-19]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "monteenth of september 2013" do
     date = Meetup.meetup(2013, 9, :monday, :teenth)
     assert Date.compare(date, ~D[2013-09-16]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "tuesteenth of march 2013" do
     date = Meetup.meetup(2013, 3, :tuesday, :teenth)
     assert Date.compare(date, ~D[2013-03-19]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "tuesteenth of april 2013" do
     date = Meetup.meetup(2013, 4, :tuesday, :teenth)
     assert Date.compare(date, ~D[2013-04-16]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "tuesteenth of august 2013" do
     date = Meetup.meetup(2013, 8, :tuesday, :teenth)
     assert Date.compare(date, ~D[2013-08-13]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "wednesteenth of january 2013" do
     date = Meetup.meetup(2013, 1, :wednesday, :teenth)
     assert Date.compare(date, ~D[2013-01-16]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "wednesteenth of february 2013" do
     date = Meetup.meetup(2013, 2, :wednesday, :teenth)
     assert Date.compare(date, ~D[2013-02-13]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "wednesteenth of june 2013" do
     date = Meetup.meetup(2013, 6, :wednesday, :teenth)
     assert Date.compare(date, ~D[2013-06-19]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "thursteenth of may 2013" do
     date = Meetup.meetup(2013, 5, :thursday, :teenth)
     assert Date.compare(date, ~D[2013-05-16]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "thursteenth of june 2013" do
     date = Meetup.meetup(2013, 6, :thursday, :teenth)
     assert Date.compare(date, ~D[2013-06-13]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "thursteenth of september 2013" do
     date = Meetup.meetup(2013, 9, :thursday, :teenth)
     assert Date.compare(date, ~D[2013-09-19]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "friteenth of april 2013" do
     date = Meetup.meetup(2013, 4, :friday, :teenth)
     assert Date.compare(date, ~D[2013-04-19]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "friteenth of august 2013" do
     date = Meetup.meetup(2013, 8, :friday, :teenth)
     assert Date.compare(date, ~D[2013-08-16]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "friteenth of september 2013" do
     date = Meetup.meetup(2013, 9, :friday, :teenth)
     assert Date.compare(date, ~D[2013-09-13]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "saturteenth of february 2013" do
     date = Meetup.meetup(2013, 2, :saturday, :teenth)
     assert Date.compare(date, ~D[2013-02-16]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "saturteenth of april 2013" do
     date = Meetup.meetup(2013, 4, :saturday, :teenth)
     assert Date.compare(date, ~D[2013-04-13]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "saturteenth of october 2013" do
     date = Meetup.meetup(2013, 10, :saturday, :teenth)
     assert Date.compare(date, ~D[2013-10-19]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "sunteenth of may 2013" do
     date = Meetup.meetup(2013, 5, :sunday, :teenth)
     assert Date.compare(date, ~D[2013-05-19]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "sunteenth of june 2013" do
     date = Meetup.meetup(2013, 6, :sunday, :teenth)
     assert Date.compare(date, ~D[2013-06-16]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "sunteenth of october 2013" do
     date = Meetup.meetup(2013, 10, :sunday, :teenth)
     assert Date.compare(date, ~D[2013-10-13]) == :eq

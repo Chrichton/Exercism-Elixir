@@ -32,19 +32,19 @@ defmodule Meetup do
   """
   @spec meetup(pos_integer, pos_integer, weekday, schedule) :: :calendar.date()
   def meetup(year, month, weekday, :teenth),
-    do: calulate(year, month, @weekday_to_day_no[weekday], 10..19)
+    do: calulate(year, month, @weekday_to_day_no[weekday])
 
   def meetup(year, month, weekday, schedule) do
   end
 
-  defp calulate(year, month, weekday_no, day_range) do
+  defp calulate(year, month, weekday_no) do
     {:ok, date} = Date.new(year, month, 1)
-    find_next_date_on_weekday(date, weekday_no, day_range)
+    find_next_date_on_weekday(date, weekday_no)
   end
 
-  def find_next_date_on_weekday(date_from, weekday_no, day_range) do
-    if Date.day_of_week(date_from) == weekday_no && date_from.day in 10..19,
+  def find_next_date_on_weekday(date_from, weekday_no) do
+    if Date.day_of_week(date_from) == weekday_no && date_from.day in 13..19,
       do: date_from,
-      else: find_next_date_on_weekday(Date.add(date_from, 1), weekday_no, day_range)
+      else: find_next_date_on_weekday(Date.add(date_from, 1), weekday_no)
   end
 end
