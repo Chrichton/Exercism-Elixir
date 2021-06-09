@@ -47,4 +47,12 @@ defmodule Meetup do
       do: date_from,
       else: find_next_teenth_date_on_weekday(Date.add(date_from, 1), weekday_no)
   end
+
+  def find_next_weekday(date_from, weekday_no) do
+    weekday_diff = weekday_no - Date.day_of_week(date_from)
+
+    if weekday_diff <= 0,
+      do: Date.add(date_from, weekday_diff + 7),
+      else: Date.add(date_from, weekday_diff)
+  end
 end

@@ -1,6 +1,19 @@
 defmodule MeetupTest do
   use ExUnit.Case
 
+  test "find_next_weekday" do
+    date = ~D[2021-06-09]
+    # wednesday -> day-number == 3
+
+    assert Meetup.find_next_weekday(date, 1) == ~D[2021-06-14]
+    assert Meetup.find_next_weekday(date, 2) == ~D[2021-06-15]
+    assert Meetup.find_next_weekday(date, 3) == ~D[2021-06-16]
+    assert Meetup.find_next_weekday(date, 4) == ~D[2021-06-10]
+    assert Meetup.find_next_weekday(date, 5) == ~D[2021-06-11]
+    assert Meetup.find_next_weekday(date, 6) == ~D[2021-06-12]
+    assert Meetup.find_next_weekday(date, 7) == ~D[2021-06-13]
+  end
+
   # @tag :pending
   test "monteenth of may 2013" do
     date = Meetup.meetup(2013, 5, :monday, :teenth)
