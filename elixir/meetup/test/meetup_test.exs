@@ -476,85 +476,85 @@ defmodule MeetupTest do
     assert Date.compare(date, ~D[2013-04-28]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last monday of march 2013" do
     date = Meetup.meetup(2013, 3, :monday, :last)
     assert Date.compare(date, ~D[2013-03-25]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last monday of april 2013" do
     date = Meetup.meetup(2013, 4, :monday, :last)
     assert Date.compare(date, ~D[2013-04-29]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last tuesday of may 2013" do
     date = Meetup.meetup(2013, 5, :tuesday, :last)
     assert Date.compare(date, ~D[2013-05-28]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last tuesday of june 2013" do
     date = Meetup.meetup(2013, 6, :tuesday, :last)
     assert Date.compare(date, ~D[2013-06-25]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last wednesday of july 2013" do
     date = Meetup.meetup(2013, 7, :wednesday, :last)
     assert Date.compare(date, ~D[2013-07-31]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last wednesday of august 2013" do
     date = Meetup.meetup(2013, 8, :wednesday, :last)
     assert Date.compare(date, ~D[2013-08-28]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last thursday of september 2013" do
     date = Meetup.meetup(2013, 9, :thursday, :last)
     assert Date.compare(date, ~D[2013-09-26]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last thursday of october 2013" do
     date = Meetup.meetup(2013, 10, :thursday, :last)
     assert Date.compare(date, ~D[2013-10-31]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last friday of november 2013" do
     date = Meetup.meetup(2013, 11, :friday, :last)
     assert Date.compare(date, ~D[2013-11-29]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last friday of december 2013" do
     date = Meetup.meetup(2013, 12, :friday, :last)
     assert Date.compare(date, ~D[2013-12-27]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last saturday of january 2013" do
     date = Meetup.meetup(2013, 1, :saturday, :last)
     assert Date.compare(date, ~D[2013-01-26]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last saturday of february 2013" do
     date = Meetup.meetup(2013, 2, :saturday, :last)
     assert Date.compare(date, ~D[2013-02-23]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last sunday of march 2013" do
     date = Meetup.meetup(2013, 3, :sunday, :last)
     assert Date.compare(date, ~D[2013-03-31]) == :eq
   end
 
-  @tag :pending
+  # @tag :pending
   test "last sunday of april 2013" do
     date = Meetup.meetup(2013, 4, :sunday, :last)
     assert Date.compare(date, ~D[2013-04-28]) == :eq

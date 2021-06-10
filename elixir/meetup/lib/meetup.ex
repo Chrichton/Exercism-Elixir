@@ -34,11 +34,20 @@ defmodule Meetup do
   def meetup(year, month, weekday, :teenth),
     do: calulate_teenth_day(year, month, @weekday_to_day_no[weekday])
 
+  def meetup(year, month, weekday, :last),
+    do: calulate_last_day(year, month, @weekday_to_day_no[weekday])
+
   def meetup(year, month, weekday, schedule) do
   end
 
   defp calulate_teenth_day(year, month, weekday_no) do
     {:ok, date} = Date.new(year, month, 13)
+    find_weekday(date, weekday_no)
+  end
+
+  defp calulate_last_day(year, month, weekday_no) do
+    {:ok, date} = Date.new(year, month, 1)
+    {:ok, date} = Date.new(year, month, Date.days_in_month(date) - 6)
     find_weekday(date, weekday_no)
   end
 
