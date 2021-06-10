@@ -38,20 +38,14 @@ defmodule Meetup do
   end
 
   defp calulate_teenth_day(year, month, weekday_no) do
-    {:ok, date} = Date.new(year, month, 1)
-    find_next_teenth_date_on_weekday(date, weekday_no)
+    {:ok, date} = Date.new(year, month, 13)
+    find_weekday(date, weekday_no)
   end
 
-  defp find_next_teenth_date_on_weekday(date_from, weekday_no) do
-    if Date.day_of_week(date_from) == weekday_no && date_from.day in 13..19,
-      do: date_from,
-      else: find_next_teenth_date_on_weekday(find_next_weekday(date_from, weekday_no), weekday_no)
-  end
-
-  def find_next_weekday(date_from, weekday_no) do
+  def find_weekday(date_from, weekday_no) do
     weekday_diff = weekday_no - Date.day_of_week(date_from)
 
-    if weekday_diff <= 0,
+    if weekday_diff < 0,
       do: Date.add(date_from, weekday_diff + 7),
       else: Date.add(date_from, weekday_diff)
   end
