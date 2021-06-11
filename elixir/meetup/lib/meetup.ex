@@ -49,9 +49,6 @@ defmodule Meetup do
   def meetup(year, month, weekday, :last),
     do: calulate_last_day(year, month, @weekday_to_day_no[weekday])
 
-  def meetup(year, month, weekday, schedule) do
-  end
-
   defp calulate_first_day(year, month, weekday_no) do
     new_date(year, month, 1)
     |> find_weekday(weekday_no)
