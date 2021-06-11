@@ -37,6 +37,15 @@ defmodule Meetup do
   def meetup(year, month, weekday, :first),
     do: calulate_first_day(year, month, @weekday_to_day_no[weekday])
 
+  def meetup(year, month, weekday, :second),
+    do: calulate_second_day(year, month, @weekday_to_day_no[weekday])
+
+  def meetup(year, month, weekday, :third),
+    do: calulate_third_day(year, month, @weekday_to_day_no[weekday])
+
+  def meetup(year, month, weekday, :fourth),
+    do: calulate_fourth_day(year, month, @weekday_to_day_no[weekday])
+
   def meetup(year, month, weekday, :last),
     do: calulate_last_day(year, month, @weekday_to_day_no[weekday])
 
@@ -45,6 +54,21 @@ defmodule Meetup do
 
   defp calulate_first_day(year, month, weekday_no) do
     new_date(year, month, 1)
+    |> find_weekday(weekday_no)
+  end
+
+  defp calulate_second_day(year, month, weekday_no) do
+    new_date(year, month, 8)
+    |> find_weekday(weekday_no)
+  end
+
+  defp calulate_third_day(year, month, weekday_no) do
+    new_date(year, month, 15)
+    |> find_weekday(weekday_no)
+  end
+
+  defp calulate_fourth_day(year, month, weekday_no) do
+    new_date(year, month, 22)
     |> find_weekday(weekday_no)
   end
 
