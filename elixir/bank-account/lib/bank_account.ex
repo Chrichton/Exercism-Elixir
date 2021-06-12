@@ -56,7 +56,9 @@ defmodule BankAccount do
   """
   @spec balance(account) :: integer
   def balance(account) do
-    GenServer.call(account, :balance)
+    if Process.alive?(account),
+      do: GenServer.call(account, :balance),
+      else: {:error, :account_closed}
   end
 
   @doc """
@@ -64,6 +66,12 @@ defmodule BankAccount do
   """
   @spec update(account, integer) :: any
   def update(account, amount) do
-    GenServer.cast(account, {:update, %Posting{amount: amount, date_time: DateTime.utc_now()}})
+    if Process.alive?(account),
+      do:
+        GenServer.cast(
+          account,
+          {:update, %Posting{amount: amount, date_time: DateTime.utc_now()}}
+        ),
+      else: {:error, :account_closed}
   end
 end
