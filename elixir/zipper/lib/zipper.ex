@@ -2,8 +2,14 @@ defmodule Zipper do
   @doc """
   Get a zipper focused on the root node.
   """
+
+  defstruct focus: nil, tree: nil
+  @type t :: %__MODULE__{focus: BinTree.t(), tree: BinTree.t()}
+
   @spec from_tree(BinTree.t()) :: Zipper.t()
+
   def from_tree(bin_tree) do
+    %Zipper{focus: bin_tree, tree: bin_tree}
   end
 
   @doc """
@@ -11,6 +17,7 @@ defmodule Zipper do
   """
   @spec to_tree(Zipper.t()) :: BinTree.t()
   def to_tree(zipper) do
+    zipper.tree
   end
 
   @doc """
@@ -18,6 +25,7 @@ defmodule Zipper do
   """
   @spec value(Zipper.t()) :: any
   def value(zipper) do
+    zipper.focus.value
   end
 
   @doc """
@@ -25,6 +33,11 @@ defmodule Zipper do
   """
   @spec left(Zipper.t()) :: Zipper.t() | nil
   def left(zipper) do
+    left = zipper.focus.left
+
+    if left == nil,
+      do: nil,
+      else: %Zipper{focus: left, tree: zipper.tree}
   end
 
   @doc """
@@ -32,6 +45,11 @@ defmodule Zipper do
   """
   @spec right(Zipper.t()) :: Zipper.t() | nil
   def right(zipper) do
+    right = zipper.focus.right
+
+    if right == nil,
+      do: nil,
+      else: %Zipper{focus: right, tree: zipper.tree}
   end
 
   @doc """
@@ -39,6 +57,11 @@ defmodule Zipper do
   """
   @spec up(Zipper.t()) :: Zipper.t() | nil
   def up(zipper) do
+    up = zipper.focus.up
+
+    if up == nil,
+      do: nil,
+      else: %Zipper{focus: up, tree: zipper.tree}
   end
 
   @doc """
