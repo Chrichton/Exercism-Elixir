@@ -57,11 +57,11 @@ defmodule Zipper do
   """
   @spec up(Zipper.t()) :: Zipper.t() | nil
   def up(zipper) do
-    up = zipper.focus.up
+    parent = find_parent_node_in_tree(zipper.focus, zipper.tree, nil)
 
-    if up == nil,
+    if parent == nil,
       do: nil,
-      else: %Zipper{focus: up, tree: zipper.tree}
+      else: %Zipper{focus: parent, tree: zipper.tree}
   end
 
   @doc """
@@ -83,5 +83,16 @@ defmodule Zipper do
   """
   @spec set_right(Zipper.t(), BinTree.t() | nil) :: Zipper.t()
   def set_right(zipper, right) do
+  end
+
+  defp find_parent_node_in_tree(_node, nil, _parent), do: nil
+  defp find_parent_node_in_tree(node, tree, parent) when node == tree, do: parent
+
+  defp find_parent_node_in_tree(node, tree, _parent) do
+    parent = find_parent_node_in_tree(node, tree.left, tree)
+
+    if parent != nil,
+      do: parent,
+      else: find_parent_node_in_tree(node, tree.right, tree)
   end
 end
