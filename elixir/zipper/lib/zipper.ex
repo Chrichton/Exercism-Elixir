@@ -69,6 +69,29 @@ defmodule Zipper do
   """
   @spec set_value(Zipper.t(), any) :: Zipper.t()
   def set_value(zipper, value) do
+    node = %BinTree{value: value, left: zipper.focus.left, right: zipper.focus.right}
+    parent = find_parent_node_in_tree(zipper.focus, zipper.tree, nil)
+    tree = build_tree(zipper.focus, node, parent, zipper.tree)
+
+    %Zipper{focus: node, tree: tree}
+  end
+
+  defp build_tree(_old_node, node, nil, _tree) do
+    IO.inspect(node, label: "node")
+    node
+  end
+
+  defp build_tree(old_node, node, %BinTree{left: left} = tree, old_tree) when old_node == left do
+    new_tree = %BinTree{value: tree.value, left: node, right: tree.right}
+    parent = find_parent_node_in_tree(tree, old_tree, nil)
+    build_tree(tree, new_tree, parent, old_tree)
+  end
+
+  defp build_tree(old_node, node, %BinTree{right: right} = tree, old_tree)
+       when old_node == right do
+    new_tree = %BinTree{value: tree.value, left: tree.left, right: node}
+    parent = find_parent_node_in_tree(tree, old_tree, nil)
+    build_tree(tree, new_tree, parent, old_tree)
   end
 
   @doc """
