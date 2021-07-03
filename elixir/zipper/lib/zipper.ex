@@ -77,7 +77,6 @@ defmodule Zipper do
   end
 
   defp build_tree(_old_node, node, nil, _tree) do
-    IO.inspect(node, label: "node")
     node
   end
 
