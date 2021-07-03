@@ -99,6 +99,12 @@ defmodule Zipper do
   """
   @spec set_left(Zipper.t(), BinTree.t() | nil) :: Zipper.t()
   def set_left(zipper, left) do
+    node = %BinTree{value: zipper.focus.value, left: left, right: zipper.focus.right}
+
+    parent = find_parent_node_in_tree(zipper.focus, zipper.tree, nil)
+    tree = build_tree(zipper.focus, node, parent, zipper.tree)
+
+    %Zipper{focus: node, tree: tree}
   end
 
   @doc """
@@ -106,6 +112,12 @@ defmodule Zipper do
   """
   @spec set_right(Zipper.t(), BinTree.t() | nil) :: Zipper.t()
   def set_right(zipper, right) do
+    node = %BinTree{value: zipper.focus.value, left: zipper.focus.left, right: right}
+
+    parent = find_parent_node_in_tree(zipper.focus, zipper.tree, nil)
+    tree = build_tree(zipper.focus, node, parent, zipper.tree)
+
+    %Zipper{focus: node, tree: tree}
   end
 
   defp find_parent_node_in_tree(_node, nil, _parent), do: nil
