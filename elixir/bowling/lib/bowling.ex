@@ -4,8 +4,12 @@ defmodule Bowling do
     the game
   """
 
+  use Agent
+
   @spec start() :: any
   def start do
+    {:ok, game} = Agent.start_link(fn -> [] end, name: __MODULE__)
+    game
   end
 
   @doc """
@@ -16,6 +20,8 @@ defmodule Bowling do
 
   @spec roll(any, integer) :: any | String.t()
   def roll(game, roll) do
+    Agent.update(game, fn state -> [roll | state] end)
+    game
   end
 
   @doc """
@@ -24,6 +30,12 @@ defmodule Bowling do
   """
 
   @spec score(any) :: integer | String.t()
+  # result = Agent.get(__MODULE__, fn state -> state end)
+  # IO.inspect(result)
+
   def score(game) do
+    Agent.get(game, fn state -> state end)
+    |> Enum.reverse()
+    |> Enum.reduce(0, fn roll, acc -> acc + roll end)
   end
 end

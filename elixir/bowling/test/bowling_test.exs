@@ -12,7 +12,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 0
   end
 
-  @tag :pending
+  # @tag :pending
   test "should be able to score a game with no strikes or spares" do
     game = Bowling.start()
     rolls = [3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6, 3, 6]
@@ -20,7 +20,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 90
   end
 
-  @tag :pending
+  # @tag :pending
   test "a spare followed by zeros is worth ten points" do
     game = Bowling.start()
     rolls = [6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
