@@ -6,6 +6,8 @@ defmodule Bowling do
 
   use Agent
 
+  alias __MODULE__
+
   @spec start() :: any
   def start do
     {:ok, game} = Agent.start_link(fn -> [] end, name: __MODULE__)
@@ -49,4 +51,16 @@ defmodule Bowling do
     end)
     |> Enum.reverse()
   end
+
+  def to_frames(rolls),
+    do: Enum.map(rolls, &create_frame/1)
+
+  def create_frame([roll1, _roll2]) when roll1 == 10,
+    do: %Frame{type: :strike, rolls: [10]}
+
+  def create_frame([roll1, roll2]) when roll1 + roll2 == 10,
+    do: %Frame{type: :spare, rolls: [roll1, roll2]}
+
+  def create_frame([roll1, roll2]),
+    do: %Frame{type: :normal, rolls: [roll1, roll2]}
 end

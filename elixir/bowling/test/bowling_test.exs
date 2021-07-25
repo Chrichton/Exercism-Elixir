@@ -1,6 +1,8 @@
 defmodule BowlingTest do
   use ExUnit.Case
 
+  alias Bowling
+
   defp roll_reduce(game, rolls) do
     Enum.reduce(rolls, game, fn roll, game -> Bowling.roll(game, roll) end)
   end
@@ -8,7 +10,17 @@ defmodule BowlingTest do
   test "expand_strikes" do
     rolls = [4, 5, 10, 1, 2]
 
-    Bowling.expand_strikes(rolls) == [4, 5, 10, 0, 1, 2]
+    Bowling.expand_strikes(rolls) == [4, 5, 10, 0, 1, 9]
+  end
+
+  test "to_frame" do
+    rolls = [[4, 5], [10, 0], [1, 2]]
+
+    Bowling.to_frames(rolls) == [
+      %Frame{type: :normal, rolls: [4, 5]},
+      %Frame{type: :strike, rolls: [10]},
+      %Frame{type: :spare, rolls: [1, 9]}
+    ]
   end
 
   test "should be able to score a game with all zeros" do
