@@ -23,6 +23,12 @@ defmodule BowlingTest do
     ]
   end
 
+  test "Frame score" do
+    frame = %Frame{type: :normal, rolls: [4, 5]}
+
+    assert Frame.score(frame) == 9
+  end
+
   test "should be able to score a game with all zeros" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
