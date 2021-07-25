@@ -5,6 +5,12 @@ defmodule BowlingTest do
     Enum.reduce(rolls, game, fn roll, game -> Bowling.roll(game, roll) end)
   end
 
+  test "expand_strikes" do
+    rolls = [4, 5, 10, 1, 2]
+
+    Bowling.expand_strikes(rolls) == [4, 5, 10, 0, 1, 2]
+  end
+
   test "should be able to score a game with all zeros" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

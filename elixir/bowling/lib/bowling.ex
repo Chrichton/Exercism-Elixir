@@ -34,8 +34,19 @@ defmodule Bowling do
   # IO.inspect(result)
 
   def score(game) do
-    Agent.get(game, fn state -> state end)
+    rolls =
+      Agent.get(game, fn state -> state end)
+      |> Enum.reverse()
+      |> Enum.reduce(0, fn roll, acc -> acc + roll end)
+  end
+
+  def expand_strikes(rolls) do
+    rolls
+    |> Enum.reduce([], fn roll, acc ->
+      if roll == 10,
+        do: [0 | [10 | acc]],
+        else: [roll | acc]
+    end)
     |> Enum.reverse()
-    |> Enum.reduce(0, fn roll, acc -> acc + roll end)
   end
 end
