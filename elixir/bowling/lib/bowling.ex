@@ -36,10 +36,12 @@ defmodule Bowling do
   # IO.inspect(result)
 
   def score(game) do
-    rolls =
-      Agent.get(game, fn state -> state end)
-      |> Enum.reverse()
-      |> Enum.reduce(0, fn roll, acc -> acc + roll end)
+    Agent.get(game, fn state -> state end)
+    |> Enum.reverse()
+    |> expand_strikes()
+    |> Enum.chunk_every(2)
+    |> to_frames()
+    |> Enum.reduce(0, fn frame, acc -> acc + Frame.score(frame) end)
   end
 
   def expand_strikes(rolls) do
