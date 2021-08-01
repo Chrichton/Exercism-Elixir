@@ -23,6 +23,41 @@ defmodule BowlingTest do
     ]
   end
 
+  describe "calculate_frame" do
+    @next_frames [
+      %Frame{type: :normal, rolls: [4, 1]},
+      %Frame{type: :spare, rolls: [8, 2]},
+      %Frame{type: :strike, rolls: [10]}
+    ]
+
+    test "strike" do
+      frame = %Frame{type: :strike, rolls: [10]}
+
+      expected = %Frame{type: :strike, rolls: [10, 5, 10]}
+      actual = Bowling.calculate_frame(frame, @next_frames)
+
+      assert actual == expected
+    end
+
+    test "spare" do
+      frame = %Frame{type: :spare, rolls: [9, 1]}
+
+      expected = %Frame{type: :spare, rolls: [9, 1, 5]}
+      actual = Bowling.calculate_frame(frame, @next_frames)
+
+      assert actual == expected
+    end
+
+    test "normal" do
+      frame = %Frame{type: :normal, rolls: [9, 1]}
+
+      expected = %Frame{type: :normal, rolls: [9, 1]}
+      actual = Bowling.calculate_frame(frame, @next_frames)
+
+      assert actual == expected
+    end
+  end
+
   test "Frame score" do
     frame = %Frame{type: :normal, rolls: [4, 5]}
 
