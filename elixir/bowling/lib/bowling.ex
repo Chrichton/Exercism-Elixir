@@ -41,6 +41,7 @@ defmodule Bowling do
     |> expand_strikes()
     |> Enum.chunk_every(2)
     |> to_frames()
+    |> calculate_frames()
     |> Enum.reduce(0, fn frame, acc -> acc + Frame.score(frame) end)
   end
 
@@ -65,6 +66,15 @@ defmodule Bowling do
 
   def create_frame([roll1, roll2]),
     do: %Frame{type: :normal, rolls: [roll1, roll2]}
+
+  def calculate_frames(frames) do
+    frames
+    |> Enum.reduce({[], Enum.drop(frames, 1)}, fn frame, {added_frames, next_frames} ->
+      {[calculate_frame(frame, next_frames) | added_frames], Enum.drop(next_frames, 1)}
+    end)
+    |> elem(0)
+    |> Enum.reverse()
+  end
 
   def calculate_frame(%Frame{type: :strike} = frame, next_frames) do
     next_frames
