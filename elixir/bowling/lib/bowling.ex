@@ -78,26 +78,26 @@ defmodule Bowling do
 
   def calculate_frame(%Frame{type: :strike} = frame, next_frames) do
     next_frames
-    |> Enum.take(2)
-    |> calculate_frame_with_correct_next_frames(frame)
+    |> get_next_rolls(2)
+    |> calculate_frame_with_rolls(frame)
   end
 
   def calculate_frame(%Frame{type: :spare} = frame, next_frames) do
     next_frames
-    |> Enum.take(1)
-    |> calculate_frame_with_correct_next_frames(frame)
+    |> get_next_rolls(1)
+    |> calculate_frame_with_rolls(frame)
   end
 
   def calculate_frame(%Frame{type: :normal} = frame, _next_frames), do: frame
 
-  defp calculate_frame_with_correct_next_frames(next_frames, %Frame{} = frame) do
-    calculated_rolls =
-      next_frames
-      |> Enum.reduce(frame.rolls |> Enum.reverse(), fn next_frame, rolls ->
-        [Frame.score(next_frame) | rolls]
-      end)
-      |> Enum.reverse()
+  defp get_next_rolls(frames, number_of_rolls) do
+    frames
+    |> Enum.take(number_of_rolls)
+    |> Enum.reduce([], fn frame, rolls -> rolls ++ frame.rolls end)
+    |> Enum.take(number_of_rolls)
+  end
 
-    %Frame{frame | rolls: calculated_rolls}
+  defp calculate_frame_with_rolls(rolls, %Frame{} = frame) do
+    %Frame{frame | rolls: frame.rolls ++ rolls}
   end
 end

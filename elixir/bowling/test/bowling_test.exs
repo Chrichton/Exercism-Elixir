@@ -33,7 +33,7 @@ defmodule BowlingTest do
     test "strike" do
       frame = %Frame{type: :strike, rolls: [10]}
 
-      expected = %Frame{type: :strike, rolls: [10, 5, 10]}
+      expected = %Frame{type: :strike, rolls: [10, 4, 1]}
       actual = Bowling.calculate_frame(frame, @next_frames)
 
       assert actual == expected
@@ -42,7 +42,7 @@ defmodule BowlingTest do
     test "spare" do
       frame = %Frame{type: :spare, rolls: [9, 1]}
 
-      expected = %Frame{type: :spare, rolls: [9, 1, 5]}
+      expected = %Frame{type: :spare, rolls: [9, 1, 4]}
       actual = Bowling.calculate_frame(frame, @next_frames)
 
       assert actual == expected
@@ -95,7 +95,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 16
   end
 
-  @tag :pending
+  # @tag :pending
   test "consecutive spares each get a one roll bonus" do
     game = Bowling.start()
     rolls = [5, 5, 3, 7, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
