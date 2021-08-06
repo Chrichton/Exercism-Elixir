@@ -87,7 +87,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 10
   end
 
-  @tag :pending
+  # @tag :pending
   test "points scored in the roll after a spare are counted twice" do
     game = Bowling.start()
     rolls = [6, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
