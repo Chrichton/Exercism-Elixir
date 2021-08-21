@@ -41,6 +41,7 @@ defmodule Bowling do
     |> expand_strikes()
     |> Enum.chunk_every(2)
     |> to_frames()
+    |> IO.inspect()
     |> calculate_frames()
     |> Enum.reduce(0, fn frame, acc -> acc + Frame.score(frame) end)
   end
@@ -55,16 +56,22 @@ defmodule Bowling do
     |> Enum.reverse()
   end
 
-  def to_frames(rolls),
-    do: Enum.map(rolls, &create_frame/1)
+  def to_frames(rolls) do
+    rolls
+    |> Enum.zip(1..length(rolls))
+    |> Enum.map(&create_frame/1)
+  end
 
-  def create_frame([roll1, _roll2]) when roll1 == 10,
+  def create_frame({[roll1, roll2], frame_no}) when frame_no > 10,
+    do: %Frame{type: :fill, rolls: [roll1, roll2]}
+
+  def create_frame({[roll1, _roll2], _frame_no}) when roll1 == 10,
     do: %Frame{type: :strike, rolls: [10]}
 
-  def create_frame([roll1, roll2]) when roll1 + roll2 == 10,
+  def create_frame({[roll1, roll2], _frame_no}) when roll1 + roll2 == 10,
     do: %Frame{type: :spare, rolls: [roll1, roll2]}
 
-  def create_frame([roll1, roll2]),
+  def create_frame({[roll1, roll2], _frame_no}),
     do: %Frame{type: :normal, rolls: [roll1, roll2]}
 
   def calculate_frames(frames) do
@@ -74,6 +81,9 @@ defmodule Bowling do
     end)
     |> elem(0)
     |> Enum.reverse()
+  end
+
+  def calculate_frame(%Frame{type: :fill}, _next_frames) do
   end
 
   def calculate_frame(%Frame{type: :strike} = frame, next_frames) do
