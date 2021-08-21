@@ -151,7 +151,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 20
   end
 
-  @tag :pending
+  # @tag :pending
   test "strikes with the two roll bonus do not get bonus rolls" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10]

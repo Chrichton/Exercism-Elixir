@@ -83,8 +83,7 @@ defmodule Bowling do
     |> Enum.reverse()
   end
 
-  def calculate_frame(%Frame{type: :fill}, _next_frames) do
-  end
+  def calculate_frame(%Frame{type: :fill}, _next_frames), do: []
 
   def calculate_frame(%Frame{type: :strike} = frame, next_frames) do
     next_frames
