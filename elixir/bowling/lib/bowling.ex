@@ -32,8 +32,6 @@ defmodule Bowling do
   """
 
   @spec score(any) :: integer | String.t()
-  # result = Agent.get(__MODULE__, fn state -> state end)
-  # IO.inspect(result)
 
   def score(game) do
     Agent.get(game, fn state -> state end)
@@ -41,7 +39,6 @@ defmodule Bowling do
     |> expand_strikes()
     |> Enum.chunk_every(2)
     |> to_frames()
-    |> IO.inspect()
     |> calculate_frames()
     |> Enum.reduce(0, fn frame, acc -> acc + Frame.score(frame) end)
   end
