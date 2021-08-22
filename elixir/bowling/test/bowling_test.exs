@@ -159,7 +159,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 30
   end
 
-  @tag :pending
+  # @tag :pending
   test "a strike with the one roll bonus after a spare in the last frame does not get a bonus" do
     game = Bowling.start()
     rolls = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 3, 10]
@@ -167,7 +167,7 @@ defmodule BowlingTest do
     assert Bowling.score(game) == 20
   end
 
-  @tag :pending
+  # @tag :pending
   test "all strikes is a perfect game" do
     game = Bowling.start()
     rolls = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
