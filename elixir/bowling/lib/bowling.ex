@@ -62,6 +62,10 @@ defmodule Bowling do
     |> Enum.map(&create_frame/1)
   end
 
+  def create_frame({[roll1, roll2], frame_no})
+      when frame_no > 10 and roll2 == 0,
+      do: %Frame{type: :fill, rolls: [roll1]}
+
   def create_frame({[roll1, roll2], frame_no}) when frame_no > 10,
     do: %Frame{type: :fill, rolls: [roll1, roll2]}
 
