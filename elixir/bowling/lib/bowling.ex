@@ -78,27 +78,33 @@ defmodule Bowling do
   def calculate_frames(frames) do
     frames
     |> Enum.reduce({[], Enum.drop(frames, 1)}, fn frame, {added_frames, next_frames} ->
-      {[calculate_frame(frame, next_frames) | added_frames], Enum.drop(next_frames, 1)}
+      {calculate_frame(added_frames, frame, next_frames), Enum.drop(next_frames, 1)}
     end)
     |> elem(0)
     |> Enum.reverse()
   end
 
-  def calculate_frame(%Frame{type: :fill}, _next_frames), do: []
+  def calculate_frame(frames, %Frame{type: :fill}, _), do: frames
 
-  def calculate_frame(%Frame{type: :strike} = frame, next_frames) do
-    next_frames
-    |> get_next_rolls(2)
-    |> calculate_frame_with_rolls(frame)
+  def calculate_frame(frames, %Frame{type: :strike} = frame, next_frames) do
+    calculated_frame =
+      next_frames
+      |> get_next_rolls(2)
+      |> calculate_frame_with_rolls(frame)
+
+    [calculated_frame | frames]
   end
 
-  def calculate_frame(%Frame{type: :spare} = frame, next_frames) do
-    next_frames
-    |> get_next_rolls(1)
-    |> calculate_frame_with_rolls(frame)
+  def calculate_frame(frames, %Frame{type: :spare} = frame, next_frames) do
+    calculated_frame =
+      next_frames
+      |> get_next_rolls(1)
+      |> calculate_frame_with_rolls(frame)
+
+    [calculated_frame | frames]
   end
 
-  def calculate_frame(%Frame{type: :normal} = frame, _next_frames), do: frame
+  def calculate_frame(frames, %Frame{type: :normal} = frame, _), do: [frame | frames]
 
   defp get_next_rolls(frames, number_of_rolls) do
     frames
