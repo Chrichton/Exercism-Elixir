@@ -10,17 +10,19 @@ defmodule BowlingTest do
   test "expand_strikes" do
     rolls = [4, 5, 10, 1, 2]
 
-    Bowling.expand_strikes(rolls) == [4, 5, 10, 0, 1, 9]
+    assert Bowling.expand_strikes(rolls) == [4, 5, 10, 0, 1, 2]
   end
 
   test "to_frame" do
-    rolls = [[4, 5], [10, 0], [1, 2]]
+    rolls = [[4, 5], [10, 0], [1, 9]]
 
-    Bowling.to_frames(rolls) == [
+    expected = [
       %Frame{type: :normal, rolls: [4, 5]},
       %Frame{type: :strike, rolls: [10]},
       %Frame{type: :spare, rolls: [1, 9]}
     ]
+
+    assert Bowling.to_frames(rolls) == expected
   end
 
   describe "calculate_frame" do
