@@ -21,6 +21,10 @@ defmodule Bowling do
   """
 
   @spec roll(any, integer) :: any | String.t()
+
+  def roll(_game, roll) when roll > 10,
+    do: {:error, "Pin count exceeds pins on the lane"}
+
   def roll(game, roll) do
     Agent.update(game, fn state -> [roll | state] end)
     game

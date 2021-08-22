@@ -183,7 +183,7 @@ defmodule BowlingTest do
     assert Bowling.roll(game, -1) == {:error, "Negative roll is invalid"}
   end
 
-  @tag :pending
+  # @tag :pending
   test "a roll cannot score more than 10 points" do
     game = Bowling.start()
     assert Bowling.roll(game, 11) == {:error, "Pin count exceeds pins on the lane"}
