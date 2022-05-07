@@ -9,6 +9,7 @@ defmodule RPNCalculatorInspection do
     receive do
       {:EXIT, ^pid, :normal} -> Map.put(results, input, :ok)
       {:EXIT, ^pid, {%ArithmeticError{}, []}} -> Map.put(results, input, :error)
+      {:EXIT, ^pid, _reason} -> Map.put(results, input, :error)
     after
       100 -> Map.put(results, input, :timeout)
     end
@@ -18,8 +19,9 @@ defmodule RPNCalculatorInspection do
     old_value = Process.flag(:trap_exit, true)
 
     result =
-      Enum.reduce(inputs, Map.new(), fn input, acc ->
-        %{pid: pid} = start_reliability_check(calculator, input)
+      inputs
+      |> Enum.map(&start_reliability_check(calculator, &1))
+      |> Enum.reduce(Map.new(), fn %{pid: pid, input: input}, acc ->
         await_reliability_check_result(%{pid: pid, input: input}, acc)
       end)
 
