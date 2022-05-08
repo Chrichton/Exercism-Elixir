@@ -31,5 +31,8 @@ defmodule RPNCalculatorInspection do
   end
 
   def correctness_check(calculator, inputs) do
+    inputs
+    |> Enum.map(&Task.async(fn -> calculator.(&1) end))
+    |> Task.await_many(100)
   end
 end
