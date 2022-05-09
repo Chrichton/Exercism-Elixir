@@ -20,9 +20,7 @@ defmodule Frequency do
     Enum.chunk_every(texts, chunks)
     |> Enum.map(&Task.async(fn -> calculate_frequencies(&1) end))
     |> Task.await_many(500)
-    |> Enum.reduce(Map.new(), fn map, acc ->
-      merge_maps_by_adding_values(map, acc)
-    end)
+    |> Enum.reduce(Map.new(), &merge_maps_by_adding_values/2)
   end
 
   def calculate_frequencies(texts) do
