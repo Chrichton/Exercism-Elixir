@@ -1,14 +1,12 @@
 defmodule CircularBufferTest do
   use ExUnit.Case
 
-  # @tag :pending
   test "reading empty buffer should fail" do
     capacity = 1
     {:ok, buffer} = CircularBuffer.new(capacity)
     assert CircularBuffer.read(buffer) == {:error, :empty}
   end
 
-  @tag :pending
   test "can read an item just written" do
     capacity = 1
     {:ok, buffer} = CircularBuffer.new(capacity)

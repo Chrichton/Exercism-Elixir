@@ -8,6 +8,7 @@ defmodule CircularBuffer do
   """
   @spec new(capacity :: integer) :: {:ok, pid}
   def new(capacity) do
+    Agent.start_link(fn -> {Map.new(), capacity} end)
   end
 
   @doc """
@@ -15,6 +16,30 @@ defmodule CircularBuffer do
   """
   @spec read(buffer :: pid) :: {:ok, any} | {:error, atom}
   def read(buffer) do
+    Agent.get(buffer, fn {map, _capacity} ->
+      if Enum.empty?(map) do
+        {:error, :empty}
+      else
+        map
+        |> Map.to_list()
+        |> Enum.sort_by(fn {key, _} -> key end, {:asc, NaiveDateTime})
+        |> List.first()
+      end
+    end)
+    |> case do
+      {:error, :empty} ->
+        {:error, :empty}
+
+      {key, value} ->
+        remove_key(buffer, key)
+        {:ok, value}
+    end
+  end
+
+  defp remove_key(buffer, key) do
+    Agent.update(buffer, fn {map, capacity} ->
+      {Map.delete(map, key), capacity}
+    end)
   end
 
   @doc """
@@ -22,6 +47,10 @@ defmodule CircularBuffer do
   """
   @spec write(buffer :: pid, item :: any) :: :ok | {:error, atom}
   def write(buffer, item) do
+    Agent.update(buffer, fn {map, capacity} ->
+      map = Map.put(map, NaiveDateTime.local_now(), item)
+      {map, capacity}
+    end)
   end
 
   @doc """
