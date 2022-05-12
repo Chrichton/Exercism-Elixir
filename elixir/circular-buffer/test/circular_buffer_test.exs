@@ -93,7 +93,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 1}
   end
 
-  @tag :pending
   test "overwrite acts like write on non-full buffer" do
     capacity = 2
     {:ok, buffer} = CircularBuffer.new(capacity)
@@ -104,7 +103,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 2}
   end
 
-  @tag :pending
   test "overwrite replaces the oldest item on full buffer" do
     capacity = 2
     {:ok, buffer} = CircularBuffer.new(capacity)
@@ -116,7 +114,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 3}
   end
 
-  @tag :pending
   test "overwrite replaces the oldest item remaining in buffer following a read" do
     capacity = 3
     {:ok, buffer} = CircularBuffer.new(capacity)
@@ -132,7 +129,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 5}
   end
 
-  @tag :pending
   test "initial clear does not affect wrapping around" do
     capacity = 2
     {:ok, buffer} = CircularBuffer.new(capacity)
