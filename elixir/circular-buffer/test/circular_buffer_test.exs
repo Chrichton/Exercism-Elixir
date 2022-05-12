@@ -74,7 +74,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:error, :empty}
   end
 
-  @tag :pending
   test "clear frees up capacity for another write" do
     capacity = 1
     {:ok, buffer} = CircularBuffer.new(capacity)
@@ -85,7 +84,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 2}
   end
 
-  @tag :pending
   test "clear does nothing on empty buffer" do
     capacity = 1
     {:ok, buffer} = CircularBuffer.new(capacity)

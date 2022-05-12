@@ -72,6 +72,9 @@ defmodule CircularBuffer do
   """
   @spec clear(buffer :: pid) :: :ok
   def clear(buffer) do
+    Agent.update(buffer, fn {_map, capacity} ->
+      {Map.new(), capacity}
+    end)
   end
 
   defp full?(buffer) do
