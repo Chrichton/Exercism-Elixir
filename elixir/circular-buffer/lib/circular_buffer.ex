@@ -53,9 +53,16 @@ defmodule CircularBuffer do
       else: add_item(buffer, item)
   end
 
+  @spec clear(buffer :: pid) :: :ok
+  def clear(buffer) do
+    Agent.update(buffer, fn {_map, capacity} ->
+      initial_state(capacity)
+    end)
+  end
+
   defp add_item(buffer, item) do
     Agent.update(buffer, fn {map, capacity} ->
-      {Map.put(map, Timex.now(), item), capacity}
+      {add_item_to_map(map, item), capacity}
     end)
   end
 
@@ -65,8 +72,14 @@ defmodule CircularBuffer do
 
       map
       |> Map.delete(key)
-      |> Map.put(Timex.now(), item)
+      |> add_item_to_map(item)
       |> then(fn map -> {map, capacity} end)
+    end)
+  end
+
+  defp remove_item(buffer, {key, _value}) do
+    Agent.update(buffer, fn {map, capacity} ->
+      {Map.delete(map, key), capacity}
     end)
   end
 
@@ -77,18 +90,7 @@ defmodule CircularBuffer do
     |> List.first()
   end
 
-  defp remove_item(buffer, {key, _value}) do
-    Agent.update(buffer, fn {map, capacity} ->
-      {Map.delete(map, key), capacity}
-    end)
-  end
-
-  @spec clear(buffer :: pid) :: :ok
-  def clear(buffer) do
-    Agent.update(buffer, fn {_map, capacity} ->
-      initial_state(capacity)
-    end)
-  end
+  defp add_item_to_map(map, item), do: Map.put(map, Timex.now(), item)
 
   defp full?(buffer) do
     Agent.get(buffer, fn {map, capacity} ->
