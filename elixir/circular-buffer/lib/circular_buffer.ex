@@ -49,11 +49,15 @@ defmodule CircularBuffer do
   """
   @spec write(buffer :: pid, item :: any) :: :ok | {:error, atom}
   def write(buffer, item) do
-    Agent.update(buffer, fn {map, capacity} ->
-      map = Map.put(map, Timex.now(), item)
-      IO.inspect(map, label: "\nwrite")
-      {map, capacity}
-    end)
+    if full?(buffer) do
+      {:error, :full}
+    else
+      Agent.update(buffer, fn {map, capacity} ->
+        map = Map.put(map, Timex.now(), item)
+
+        {map, capacity}
+      end)
+    end
   end
 
   @doc """
@@ -68,5 +72,11 @@ defmodule CircularBuffer do
   """
   @spec clear(buffer :: pid) :: :ok
   def clear(buffer) do
+  end
+
+  defp full?(buffer) do
+    Agent.get(buffer, fn {map, capacity} ->
+      Enum.count(map) == capacity
+    end)
   end
 end

@@ -34,7 +34,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 2}
   end
 
-  @tag :pending
   test "full buffer can't be written to" do
     capacity = 1
     {:ok, buffer} = CircularBuffer.new(capacity)
@@ -43,7 +42,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.write(buffer, 2) == {:error, :full}
   end
 
-  @tag :pending
   test "a read frees up capacity for another write" do
     capacity = 1
     {:ok, buffer} = CircularBuffer.new(capacity)
@@ -54,7 +52,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 2}
   end
 
-  @tag :pending
   test "read position is maintained even across multiple writes" do
     capacity = 3
     {:ok, buffer} = CircularBuffer.new(capacity)
