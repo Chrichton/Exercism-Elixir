@@ -10,7 +10,7 @@ defmodule CircularBuffer do
   """
   @spec new(capacity :: integer) :: {:ok, pid}
   def new(capacity) do
-    Agent.start_link(fn -> {Map.new(), capacity} end)
+    Agent.start_link(fn -> initial_state(capacity) end)
   end
 
   @doc """
@@ -28,7 +28,7 @@ defmodule CircularBuffer do
         {:error, :empty}
 
       {key, value} ->
-        remove_key(buffer, key)
+        remove_item(buffer, {key, value})
         {:ok, value}
     end
   end
@@ -55,9 +55,7 @@ defmodule CircularBuffer do
 
   defp add_item(buffer, item) do
     Agent.update(buffer, fn {map, capacity} ->
-      map = Map.put(map, Timex.now(), item)
-
-      {map, capacity}
+      {Map.put(map, Timex.now(), item), capacity}
     end)
   end
 
@@ -79,7 +77,7 @@ defmodule CircularBuffer do
     |> List.first()
   end
 
-  defp remove_key(buffer, key) do
+  defp remove_item(buffer, {key, _value}) do
     Agent.update(buffer, fn {map, capacity} ->
       {Map.delete(map, key), capacity}
     end)
@@ -88,7 +86,7 @@ defmodule CircularBuffer do
   @spec clear(buffer :: pid) :: :ok
   def clear(buffer) do
     Agent.update(buffer, fn {_map, capacity} ->
-      {Map.new(), capacity}
+      initial_state(capacity)
     end)
   end
 
@@ -97,4 +95,6 @@ defmodule CircularBuffer do
       Enum.count(map) == capacity
     end)
   end
+
+  defp initial_state(capacity), do: {Map.new(), capacity}
 end
