@@ -3,8 +3,6 @@ defmodule CircularBuffer do
   An API to a stateful process that fills and empties a circular buffer
   """
 
-  use Timex
-
   @doc """
   Create a new buffer of a given capacity
   """
@@ -86,11 +84,11 @@ defmodule CircularBuffer do
   defp get_oldest_item(map) do
     map
     |> Map.to_list()
-    |> Enum.sort_by(fn {key, _} -> key end, {:asc, Timex})
+    |> Enum.sort_by(fn {key, _} -> key end)
     |> List.first()
   end
 
-  defp add_item_to_map(map, item), do: Map.put(map, Timex.now(), item)
+  defp add_item_to_map(map, item), do: Map.put(map, :erlang.system_time(), item)
 
   defp full?(buffer) do
     Agent.get(buffer, fn {map, capacity} ->
