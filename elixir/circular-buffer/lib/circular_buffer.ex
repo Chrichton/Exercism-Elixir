@@ -3,6 +3,8 @@ defmodule CircularBuffer do
   An API to a stateful process that fills and empties a circular buffer
   """
 
+  use Timex
+
   @doc """
   Create a new buffer of a given capacity
   """
@@ -22,7 +24,7 @@ defmodule CircularBuffer do
       else
         map
         |> Map.to_list()
-        |> Enum.sort_by(fn {key, _} -> key end, {:asc, NaiveDateTime})
+        |> Enum.sort_by(fn {key, _} -> key end, {:asc, Timex})
         |> List.first()
       end
     end)
@@ -48,7 +50,8 @@ defmodule CircularBuffer do
   @spec write(buffer :: pid, item :: any) :: :ok | {:error, atom}
   def write(buffer, item) do
     Agent.update(buffer, fn {map, capacity} ->
-      map = Map.put(map, NaiveDateTime.local_now(), item)
+      map = Map.put(map, Timex.now(), item)
+      IO.inspect(map, label: "\nwrite")
       {map, capacity}
     end)
   end

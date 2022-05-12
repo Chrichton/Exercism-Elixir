@@ -15,7 +15,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:ok, 1}
   end
 
-  @tag :pending
   test "each item may only be read once" do
     capacity = 1
     {:ok, buffer} = CircularBuffer.new(capacity)
@@ -25,7 +24,6 @@ defmodule CircularBufferTest do
     assert CircularBuffer.read(buffer) == {:error, :empty}
   end
 
-  @tag :pending
   test "items are read in the order they are written" do
     capacity = 2
     {:ok, buffer} = CircularBuffer.new(capacity)
