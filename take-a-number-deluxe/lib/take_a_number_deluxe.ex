@@ -8,7 +8,9 @@ defmodule TakeANumberDeluxe do
   def start_link(init_arg) do
     min_number = Keyword.get(init_arg, :min_number)
     max_number = Keyword.get(init_arg, :max_number)
-    state = State.new(min_number, max_number)
+    timeout = Keyword.get(init_arg, :auto_shutdown_timeout, :infinity)
+
+    state = State.new(min_number, max_number, timeout)
 
     case state do
       {:ok, state} -> GenServer.start_link(TakeANumberDeluxe, state)
@@ -40,22 +42,23 @@ defmodule TakeANumberDeluxe do
   @impl GenServer
   def init(init_arg) do
     state = init_arg
-    {:ok, state}
+    {:ok, state, state.auto_shutdown_timeout}
   end
 
   @impl GenServer
-  def handle_call(:report_state, _from, state), do: {:reply, state, state}
+  def handle_call(:report_state, _from, state),
+    do: {:reply, state, state, state.auto_shutdown_timeout}
 
   def handle_call(:queue_new_number, _from, state) do
     case State.queue_new_number(state) do
-      {:ok, number, state} -> {:reply, {:ok, number}, state}
+      {:ok, number, state} -> {:reply, {:ok, number}, state, state.auto_shutdown_timeout}
       error -> {:reply, error, state}
     end
   end
 
   def handle_call({:serve_next_queued_number, priority_number}, _from, state) do
     case State.serve_next_queued_number(state, priority_number) do
-      {:ok, number, state} -> {:reply, {:ok, number}, state}
+      {:ok, number, state} -> {:reply, {:ok, number}, state, state.auto_shutdown_timeout}
       error -> {:reply, error, state}
     end
   end
@@ -63,9 +66,23 @@ defmodule TakeANumberDeluxe do
   def handle_call(
         :reset_state,
         _from,
-        %State{min_number: min_number, max_number: max_number}
+        %State{
+          min_number: min_number,
+          max_number: max_number,
+          auto_shutdown_timeout: timeout
+        }
       ) do
-    {:ok, state} = State.new(min_number, max_number)
-    {:reply, :ok, state}
+    {:ok, state} = State.new(min_number, max_number, timeout)
+    {:reply, :ok, state, timeout}
   end
+
+  def handle_call(_, _from, state), do: {:ok, state}
+
+  @impl GenServer
+  def handle_cast(_, state), do: {:noreply, state}
+
+  @impl GenServer
+  def handle_info(:timeout, state), do: {:stop, :normal, state}
+
+  def handle_info(_, state), do: {:stop, :normal, state}
 end
