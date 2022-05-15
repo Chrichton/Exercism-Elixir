@@ -1,14 +1,24 @@
 defmodule TakeANumberDeluxe do
   # Client API
+  use GenServer
+
+  alias TakeANumberDeluxe.State
 
   @spec start_link(keyword()) :: {:ok, pid()} | {:error, atom()}
   def start_link(init_arg) do
-    # Please implement the start_link/1 function
+    min_number = Keyword.get(init_arg, :min_number)
+    max_number = Keyword.get(init_arg, :max_number)
+    state = State.new(min_number, max_number)
+
+    case state do
+      {:ok, _} -> GenServer.start_link(TakeANumberDeluxe, state)
+      error -> error
+    end
   end
 
   @spec report_state(pid()) :: TakeANumberDeluxe.State.t()
   def report_state(machine) do
-    # Please implement the report_state/1 function
+    GenServer.call(machine, :report_state)
   end
 
   @spec queue_new_number(pid()) :: {:ok, integer()} | {:error, atom()}
@@ -27,6 +37,17 @@ defmodule TakeANumberDeluxe do
   end
 
   # Server callbacks
+  @impl GenServer
+  def init(init_arg) do
+    state = init_arg
+    {:ok, state}
+  end
 
-  # Please implement the necessary callbacks
+  @impl GenServer
+  def handle_call(:report_state, _from, state) do
+    case state do
+      {:ok, state} -> {:reply, state, state}
+      error -> error
+    end
+  end
 end
