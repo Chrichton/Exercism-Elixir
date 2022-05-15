@@ -33,7 +33,7 @@ defmodule TakeANumberDeluxe do
 
   @spec reset_state(pid()) :: :ok
   def reset_state(machine) do
-    # Please implement the reset_state/1 function
+    GenServer.call(machine, :reset_state)
   end
 
   # Server callbacks
@@ -58,5 +58,14 @@ defmodule TakeANumberDeluxe do
       {:ok, number, state} -> {:reply, {:ok, number}, state}
       error -> {:reply, error, state}
     end
+  end
+
+  def handle_call(
+        :reset_state,
+        _from,
+        %State{min_number: min_number, max_number: max_number}
+      ) do
+    {:ok, state} = State.new(min_number, max_number)
+    {:reply, :ok, state}
   end
 end
