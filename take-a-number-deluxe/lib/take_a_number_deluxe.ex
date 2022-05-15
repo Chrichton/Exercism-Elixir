@@ -11,7 +11,7 @@ defmodule TakeANumberDeluxe do
     state = State.new(min_number, max_number)
 
     case state do
-      {:ok, _} -> GenServer.start_link(TakeANumberDeluxe, state)
+      {:ok, state} -> GenServer.start_link(TakeANumberDeluxe, state)
       error -> error
     end
   end
@@ -44,10 +44,5 @@ defmodule TakeANumberDeluxe do
   end
 
   @impl GenServer
-  def handle_call(:report_state, _from, state) do
-    case state do
-      {:ok, state} -> {:reply, state, state}
-      error -> error
-    end
-  end
+  def handle_call(:report_state, _from, state), do: {:reply, state, state}
 end
