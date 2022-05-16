@@ -84,5 +84,5 @@ defmodule TakeANumberDeluxe do
   @impl GenServer
   def handle_info(:timeout, state), do: {:stop, :normal, state}
 
-  def handle_info(_, state), do: {:noreply, state}
+  def handle_info(_, state), do: {:noreply, state, state.auto_shutdown_timeout}
 end
