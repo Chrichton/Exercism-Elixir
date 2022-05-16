@@ -52,14 +52,14 @@ defmodule TakeANumberDeluxe do
   def handle_call(:queue_new_number, _from, state) do
     case State.queue_new_number(state) do
       {:ok, number, state} -> {:reply, {:ok, number}, state, state.auto_shutdown_timeout}
-      error -> {:reply, error, state}
+      error -> {:reply, error, state, state.auto_shutdown_timeout}
     end
   end
 
   def handle_call({:serve_next_queued_number, priority_number}, _from, state) do
     case State.serve_next_queued_number(state, priority_number) do
       {:ok, number, state} -> {:reply, {:ok, number}, state, state.auto_shutdown_timeout}
-      error -> {:reply, error, state}
+      error -> {:reply, error, state, state.auto_shutdown_timeout}
     end
   end
 
@@ -84,5 +84,5 @@ defmodule TakeANumberDeluxe do
   @impl GenServer
   def handle_info(:timeout, state), do: {:stop, :normal, state}
 
-  def handle_info(_, state), do: {:stop, :normal, state}
+  def handle_info(_, state), do: {:noreply, state}
 end
